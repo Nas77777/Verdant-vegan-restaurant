@@ -1117,11 +1117,9 @@ def contact():
 def about():
     return render_template('about.html')
 
-@app.route('/refrences', methods=['GET', 'POST'])
-def refrences():
-
-    return render_template('Refrence.HTML')
-
+@app.route('/references', methods=['GET', 'POST'])
+def references():  # Updated spelling
+    return render_template('reference-page.html')  
 
 @app.route('/reservations')
 @login_required
@@ -1159,11 +1157,12 @@ def get_reservations():
             })
         
         return render_template('reservations.html', reservations=reservation_data)
-        
+    
     except Exception as e:
+        import traceback
         print(f"Error in reservations endpoint: {str(e)}")
+        print(traceback.format_exc())  # Print the full stack trace for debugging
         flash("Failed to retrieve reservations.", "danger")
-        # Add missing return statement here
         return redirect(url_for('home'))
 
 

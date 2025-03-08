@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdant - Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+        <nav>
+            <nav class="navbar">
+                    <span class="name"> Verdant </span>
+
+                </div>
+                <div class="nav-links">
+                    <a href="{{ url_for('references') }}">References</a>
+                    <a href="{{ url_for('home') }}">HOME</a>
+                    <a href="{{ url_for('menu') }}">MENU</a>
+                    <a href="{{ url_for('about') }}">ABOUT</a>
+                    <a href="{{ url_for('contact') }}">CONTACT</a>
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('profile') }}" class="profile-icon" title="Your Profile">
+                        <i class="fas fa-user"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="profile-icon" title="Sign In">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </a>
+                {% endif %}
+                    <a href="{{ url_for('reservation_type') }}"> 
+                    <button class="nav-btn"> RESERVATION </button> </a>
+                    
+                </div>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+
+        </nav>
+
+    <main>
+        <section class="menu-hero">
+            <h1>Our Menu</h1>
+            <p>A culinary journey through plant-based excellence</p>
+        </section>
+
+        <section class="menu-navigation">
+            <div class="menu-nav-container">
+                <button class="menu-nav-btn active" data-category="appetizers">
+                    <i class="fas fa-leaf"></i>
+                    <span>Appetizers</span>
+                </button>
+                <button class="menu-nav-btn" data-category="soups">
+                    <i class="fas fa-utensils"></i>
+                    <span>Soups</span>
+                </button>
+                <button class="menu-nav-btn" data-category="salads">
+                    <i class="fas fa-seedling"></i>
+                    <span>Salads</span>
+                </button>
+                <button class="menu-nav-btn" data-category="main">
+                    <i class="fas fa-star"></i>
+                    <span>Main Course</span>
+                </button>
+                <button class="menu-nav-btn" data-category="desserts">
+                    <i class="fas fa-ice-cream"></i>
+                    <span>Desserts</span>
+                </button>
+                <button class="menu-nav-btn" data-category="beverages">
+                    <i class="fas fa-glass-martini-alt"></i>
+                    <span>Beverages</span>
+                </button>
+            </div>
+        </section>
+
+
+        <section class="menu-content">
+            {% set categories = {} %}
+            
+            <!-- First, group all products by category -->
+            {% for product in products %}
+                {% if product.category not in categories %}
+                    {% set _ = categories.update({product.category: []}) %}
+                {% endif %}
+                {% set _ = categories[product.category].append(product) %}
+            {% endfor %}
+            
+            <!-- Then, display each category and its products -->
+            {% for category, category_products in categories.items() %}
+                <div class="menu-category" id="{{ category }}">
+                    <h2>{{ category | capitalize }}</h2>
+                    <div class="menu-grid">
+                        {% for product in category_products %}
+                            <div class="menu-item">
+                                <div class="menu-item-image">
+                                    <img src="{{ url_for('uploaded_file', filename=product.image_url) }}" alt="{{ product.name }}">
+                                    <div class="menu-item-badge">{{product.tag1}}</div>
+                                </div>
+                                <div class="menu-item-info">
+                                    <h3>{{ product.name }}</h3>
+                                    <p>{{ product.description }}</p>
+                                    <div class="menu-item-footer">
+                                        <span class="price">${{ product.price }}</span>
+                                        <div class="dietary-info">
+                                            {% if product.gluten_free %}
+                                                <span class="gluten-free" title="Gluten-Free"><i class="fas fa-wheat-awn-circle-exclamation"></i></span>
+                                            {% endif %}
+                                            {% if product.nut_free %}
+                                                <span class="nut-free" title="Contains Nuts"><i class="fas fa-seedling"></i></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <div class="menu-overlay">
+        <div class="menu-modal">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='menu.js') }}"></script>
+</body>
+</html>
+

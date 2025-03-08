@@ -74,7 +74,7 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <img src="{{ url_for('static', filename='static\favicon-32x32.png') }}" alt="Restaurant Logo" class="logo">
+                <img src="{{ url_for('static', filename='favicon-32x32.png') }}" alt="Restaurant Logo" class="logo">
                 <h2>Staff Portal</h2>
             </div>
             <ul class="nav-links">
@@ -92,8 +92,7 @@
                         <p>{{ current_user.role|title }}</p>
                     </div>
                 </div>
-                <form action="{{ url_for('logout') }}" method="post" id="logoutForm">
-                    {{ form.hidden_tag() }}
+                <form action="{{ url_for('logout') }}" method="get" id="logoutForm">
                     <button type="submit" class="logout-btn">
                         <ion-icon name="log-out-outline"></ion-icon>
                         <span>Logout</span>

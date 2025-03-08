@@ -697,18 +697,18 @@ body {
     transform: translateY(-3px);
 }
 
+.step-1-btn.active {
+    color: black;
+    border: 1px solid var(--color-accent);
+    background-color: white;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.step-1-btn.active, 
+.step-1-btn-change.active {
+    color: black;
+    border: 1px solid var(--color-accent);
+    background-color: white;
+}
 
 
 

@@ -86,11 +86,6 @@
             <div class="step-content-wrapper">
                 <div class="step-content">
 
-                    <div style="background-color: #f8f9fa; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ddd;">
-                        <p><strong>Debug Info:</strong></p>
-                        <p>Reservation Type: "{{ reservation_type }}"</p>
-                    </div>
-
                     <span class="step-1-h2"><h2>Select Location</h2></span>
                     <div class="flex-container">
                     {% if locations and locations|length > 0 and locations[0].availability_status == 1 %}
@@ -121,17 +116,28 @@
         </section>
 
         <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Disable the next button initially if no location has been selected
-    const nextBtn = document.querySelector('.nav-btn.next');
-    if (nextBtn) {
-        // Check if location is already selected
-        const selectedLocation = "{{ session.get('selected_location', '') }}";
-        if (!selectedLocation) {
-            nextBtn.disabled = true;
-            nextBtn.classList.add('disabled');
-        }
-    }
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const nextBtn = document.querySelector('.nav-btn.next');
+            if (nextBtn) {
+                const selectedLocation = "{{ session.get('selected_location', '') }}";
+                if (!selectedLocation) {
+                    nextBtn.disabled = true;
+                    nextBtn.classList.add('disabled');
+                }
+            }
+
+            document.querySelectorAll('.step-1-btn').forEach(btn => {
+                btn.addEventListener('click', function (event) {
+                    document.querySelectorAll('.step-1-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        event.preventDefault();
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+
 
     document.querySelectorAll('.step-1-btn').forEach(button => { 
         button.addEventListener('click', function() {

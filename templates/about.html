@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdant - Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <nav class="navbar">
+                <span class="name"> Verdant </span>
+
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('references') }}">References</a>
+                <a href="{{ url_for('home') }}">HOME</a>
+                <a href="{{ url_for('menu') }}">MENU</a>
+                <a href="{{ url_for('about') }}">ABOUT</a>
+                <a href="{{ url_for('contact') }}">CONTACT</a>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}" class="profile-icon" title="Your Profile">
+                    <i class="fas fa-user"></i>
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="profile-icon" title="Sign In">
+                    <i class="fas fa-sign-in-alt"></i>
+                </a>
+            {% endif %}
+                <a href="{{ url_for('reservation_type') }}"> 
+                <button class="nav-btn"> RESERVATION </button> </a>
+                
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+
+    </nav>
+
+    <main>
+        <section class="menu-hero">
+            <h1>about us</h1>
+            <br>
+            <p> At Verdant, each dish celebrates the best nature has to offer. We are making big changes in vegan dining, by infusing lush, fresh, and vibrantly delicious plant-based cuisine as indulgent as nourishing. Welcome to Verdant, where luxury meets sustainability.</p>
+        </section>
+
+    
+          <section class="about-section">
+            <div class="about-container">
+                <h2>Our Philosophy</h2>
+                <p>Every ingredient is carefully picked to bring out the richest flavor of the dish while supporting ethical and environmentally friendly practices. Eating green doesn't have to mean compromising on taste, luxury, and creativity. Verdant takes its inspiration from pieces of nature around us and embodies the concept of harmony, where each exquisite dish is a work of art provided by nature.</p>
+            </div>
+        </section>
+
+        <!-- Culinary Experience Section -->
+        <section class="about-section">
+            <div class="about-container">
+                <h2>Our Culinary Experience</h2>
+                <p>We invite you with open arms to take a deep plunge into our vibrant world, where plant-based food has no limits. Colorful bowls with overflowing nourishment and gourmet entrees plated to perfection, at Verdant there is passion, innovation, and imagination on plates. Our professional chefs combine modern innovation with traditional styles to create very sophisticated yet incredibly hearty dishes. Such is the commitment to premium quality in the making of each dish—from truffle wild mushroom risotto and heirloom tomato carpaccio to even the rich, dairy-free chocolate fondant.</p>
+            </div>
+        </section>
+
+        <!-- Menu Highlights Section -->
+        <section class="about-section">
+            <div class="about-container">
+                <h2>Our Menu</h2>
+                <p>Among a multitude of options, we are proud to offer:</p>
+                <ul>
+                    <li><strong>Appetizers:</strong> Polenta crisps with red pepper coulis and zucchini blossoms filled with roasted cashew cheese.</li>
+                    <li><strong>Hearty & Nourish Bowls:</strong> Buddha bowls drenched with low glycemic grains, roast vegetables, and a dressing guaranteed to lift one's mood.</li>
+                    <li><strong>Signature Mains:</strong> Charred eggplant with tahini, saffron risotto, plant-based 'steak' with peppercorn sauce.</li>
+                    <li><strong>Decadent Desserts:</strong> Avocado lime cheesecake or rich pistachio panna cotta with no dairy.</li>
+                    <li><strong>Refreshing Beverages:</strong> Craft-designed cocktails, pressed juices, and organic wines.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Our Space Section -->
+        <section class="about-section">
+            <div class="about-container">
+                <h2>Our Space</h2>
+                <p>At Verdant, it's all about home, with the assurance of enjoying the beauty of nature. Our space is filled with gently diffused lighting, exquisite root textures, and dangling plants—all combining to create an atmosphere that enlightens your spirit while making it easy to indulge in good food.</p>
+            </div>
+        </section>
+
+        <!-- Join Us Section -->
+        <section class="about-section join-us">
+            <div class="about-container">
+                <h2>Join Us</h2>
+                <p>At Verdant, irrespective of what your diet consists of, we make it a point to expose you to innovative plant-centered cuisine that redefines the way you look at food. Come, relish life, taste the vibrant flavors, and feel eco-friendly with us. Let us change the way you think about nature and food; a few bites at a time.</p>
+                <a href="{{ url_for('reservation_type') }}">
+                    <button class="primary-btn">Make a Reservation</button>
+                </a>
+            </div>
+        </section>
+
+    <script src="{{ url_for('static', filename='homepageScript.js') }}"></script>
+
+</body>
+</html>

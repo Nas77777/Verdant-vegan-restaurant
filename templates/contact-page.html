@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <nav class="navbar">
+                <span class="name"> Verdant </span>
+
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('references') }}">References</a>
+                <a href="{{ url_for('home') }}">HOME</a>
+                <a href="{{ url_for('menu') }}">MENU</a>
+                <a href="{{ url_for('about') }}">ABOUT</a>
+                <a href="{{ url_for('contact') }}">CONTACT</a>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}" class="profile-icon" title="Your Profile">
+                    <i class="fas fa-user"></i>
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="profile-icon" title="Sign In">
+                    <i class="fas fa-sign-in-alt"></i>
+                </a>
+            {% endif %}
+                <a href="{{ url_for('reservation_type') }}"> 
+                <button class="nav-btn"> RESERVATION </button> </a>
+                
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+
+    </nav>
+
+    <main>
+        <section class="contact-page">
+                <div class="contact-container">
+                    <div class="contact-title">
+                        <h2>Get In Touch</h2>
+                        <hr> <br>
+    
+                        <!-- Change the <p> to include info require for contacting us -->
+                        <p>Here goes the info about contacting us</p><br>
+                    </div>
+                    <div class="rows-input">
+                        <form action="" method="post" class="contact-center">
+                            <div>
+                                <input type="text" id="first-name" name="name" placeholder="First Name" class="contact-input" required>
+                                <input type="text" id="last-name" name="last-name" placeholder="Last Name" class="contact-input" required>
+                            </div>
+                            
+                            <div>
+                                <input type="email" id="email" name="email" placeholder="Email" class="contact-input" required>
+                                <input type="tel" id="phone" name="phone" placeholder="Phone" class="contact-input" pattern="[0-9]+" title="Phone number must contain only numbers" required>
+                            </div>
+    
+                            <textarea name="address" id="address" placeholder="Address" class="contact-input" required></textarea>
+                            <textarea name="message" placeholder="Your Message" class="contact-input textarea-2" required></textarea>
+                            <button class="contact-button" type="submit" value="Submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            
+
+                <div class="mobile-container-contact-form">
+                    <div class="mobile-contact-title">
+                        <h2>Get In Touch</h2>
+                        <hr> <br>
+    
+                        <!-- Change the <p> to include info require for contacting us -->
+                        <!-- <p>Here goes the info about contacting us</p><br> -->
+                    </div>
+
+                    <form action="" method="post" class="mobile-contact-center">
+                        <input type="text" id="first-name" name="name" placeholder="First Name" class="mobile-contact-input" required>
+                        <input type="text" id="last-name" name="last-name" placeholder="Last Name" class="mobile-contact-input" required>
+                        <input type="email" id="email" name="email" placeholder="Email" class="mobile-contact-input" required>
+                        <input type="tel" id="phone" name="phone" placeholder="Phone" class="mobile-contact-input" pattern="[0-9]+" title="Phone number must contain only numbers" required>
+                        <textarea name="address" id="address" placeholder="Address" class="mobile-contact-input" required></textarea>
+                        <textarea name="message" placeholder="Your Message" class="mobile-contact-input mobile-textarea-2" required></textarea>
+                        <button class="contact-button" type="submit" value="Submit">Submit</button>
+                    </form>
+                </div>
+        </section>
+    </main>
+    <script src="{{ url_for('static', filename='homepageScript.js') }}"></script>
+</body>
+</html>

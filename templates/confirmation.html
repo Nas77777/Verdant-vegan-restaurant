@@ -48,8 +48,11 @@
                 <div class="confirmation-actions">
                     <p class="confirmation-note">A confirmation email has been sent to your email address.</p>
                     <div class="action-buttons">
-                        <a href="index.html" class="home-btn">Return to Home</a>
-                        <button class="calendar-btn">view profile</button>
+                        <a href="{{ url_for('home') }}" class="home-btn">Return to Home</a>
+                        <a href="{{ url_for('profile') }}">
+                            <button class="calendar-btn">View Profile</button>
+                        </a>
+                    </div>
                     </div>
                 </div>
             </div>
