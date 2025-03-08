@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Progress Steps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='step-1-1.css') }}">
+</head>
+<body>
+    <div class="progress-wrapper">
+        <!-- Desktop Progress -->
+                <div class="progress-steps">
+                    <button class="step-btn active" data-step="1" >
+                        <span class="step-number">1</span>
+                        <div class="step-info">
+                            <h3>Location</h3>
+                            <p>Choose Location</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="2">
+                        <span class="step-number">2</span>
+                        <div class="step-info">
+                            <h3>Dining Area </h3>
+                            <p>Select Your Dining Area</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="3">
+                        <span class="step-number">3</span>
+                        <div class="step-info">
+                            <h3>Date & Time</h3>
+                            <p>Select Date & Time</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="4">
+                        <span class="step-number">4</span>
+                        <div class="step-info">
+                            <h3>Details</h3>
+                            <p>Confirmation</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="5">
+                        <span class="step-number">5</span>
+                        <div class="step-info">
+                            <h3>Complete</h3>
+                            <p>Confirmation</p>
+                        </div>
+                    </button>
+
+
+                    <div class="progress-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Progress -->
+        <div class="mobile-progress">
+            <div class="mobile-header">
+                <div class="current-info">
+                    <span class="step-count">Step <span class="current">1</span> of 5</span>
+                    <h2 class="current-title">Select Type</h2>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="20%"></div>
+                </div>
+                <div class="step-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot" data-step="5"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="step-section active space-responsive" data-step="1">
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <span class="stp-1-title"><h2>Select Your Package</h2></span>
+                    <div class="stp-1-2-flex-cont">
+
+
+                        <!-- Essential -->
+                        <div class="stp-1-2-item">
+                            <div class="flex-cont-box">
+                                <span>
+                                    <h2 class="text-style-1">Essential</h2>
+                
+                                    <span class="inline-text-plan">
+                                        <span class="price-change-plan"><h2>$2,500</h2></span>
+                                        <span style="font-size: 14px; color:#808080;"><h3>/hour</h3></span>
+                                    </span>
+                                </span>
+
+                                <ul class="stp-li-cont">
+                                    <li><span class="icon-checkmark">✓</span>  10-35 Quest</li>
+                                    <li><span class="icon-checkmark">✓</span>  3-Course Plated Menu</li>
+                                    <li><span class="icon-checkmark">✓</span>  Standard Setup</li>
+                                    <li><span class="icon-checkmark">✓</span>  Custom Decor</li>
+                                    <li><span class="icon-checkmark">✓</span>  Event Staff</li>
+                                </ul>
+
+                                <span class="stp-1-1-box-btn">
+                                    <a href="#">
+                                    <button class="stp-1-1-btn" data-name="Essential" > Select Package </button> </a>
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <!-- Premiun -->
+                        <div class="stp-1-2-item" style="margin-bottom:38px;">
+                            <span class="right-text-plan"><h4>Most Popular</h4></span>
+                            <div class="flex-cont-box">
+                                <div>
+
+                                    <div class="plan-title-cont">
+                                        <h2 class="text-style-1-2">Premium</h2>
+                                        <h3 class="text-below-plan">Wedding Reception</h3>
+                                    </div>
+                                    
+                                    <span class="inline-text-plan">
+                                        <span class="price-change-plan"><h2>$4,350</h2></span>
+                                        <span style="font-size: 14px; color:#808080;"><h3>/hour</h3></span>
+                                    </span>
+                                </div>
+
+                                <ul class="stp-li-cont">
+                                    <li><span class="icon-checkmark">✓</span>  10-75 guests</li>
+                                    <li><span class="icon-checkmark">✓</span>  5-Course Premium Menu</li>
+                                    <li><span class="icon-checkmark">✓</span>  Dedicated Terminator </li>
+                                    <li><span class="icon-checkmark">✓</span>  Custom Decor</li>
+                                    <li><span class="icon-checkmark">✓</span>  VIP Service</li>
+                                </ul>
+
+                                <span class="stp-1-1-box-btn">
+                                    <a href="#">
+                                    <button class="stp-1-1-btn" data-name="Premium"> Select Package </button> </a>
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <!-- Luxury -->
+                        <div class="stp-1-2-item">
+                            <div class="flex-cont-box">
+                                <span>
+                                    <h2 class="text-style-1">Luxury</h2>
+                
+                                    <span class="inline-text-plan">
+                                        <span class="price-change-plan"><h2>$3,550</h2></span>
+                                        <span style="font-size: 14px; color:#808080;"><h3>/hour</h3></span>
+                                    </span>
+                                </span>
+
+                                <ul class="stp-li-cont">
+                                    <li><span class="icon-checkmark">✓</span>  10-50 guests</li>
+                                    <li><span class="icon-checkmark">✓</span>  7-Course Luxury Menu</li>
+                                    <li><span class="icon-checkmark">✓</span>  Full Event Team </li>
+                                    <li><span class="icon-checkmark">✓</span>  Private Chefs</li>
+                                    <li><span class="icon-checkmark">✓</span>  VIP Service</li>
+                                </ul>
+
+                                <span class="stp-1-1-box-btn">
+                                    <a href="#">
+                                    <button class="stp-1-1-btn"  data-name="Luxury" > Select Package </button> </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <section class="step-section" data-step="2">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 2 content -->
+            </div>
+        </section> 
+
+        <section class="step-section" data-step="3">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 3 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="4">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 4 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="5">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 5 content -->
+            </div>
+        </section>
+
+        <script>
+        document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            const package = this.getAttribute('data-name');
+
+            fetch('/event_packages/reservation',{ 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ package })
+
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Event Package have been selected successfully:", data.message);
+                } else {
+                    console.error("Error:", data.message);
+                }
+            }); 
+        });
+    });
+
+            document.querySelectorAll('.stp-1-1-btn').forEach(btn => {
+                btn.addEventListener('click', function (event) {
+                    document.querySelectorAll('.stp-1-1-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        event.preventDefault();
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                const progressValue = progressFill.getAttribute('data-progress');
+                progressFill.style.width = progressValue;
+            }
+        });
+            
+
+        </script>
+    
+    <div class="nav-buttons">
+        <a href="{{ url_for('location') }}"> 
+        <button class="nav-btn prev" >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span>Previous</span>
+        </button>
+    </a>
+
+        <a href="{{ url_for('date_and_time_page') }}">
+        <button class="nav-btn next">
+            <span>Next</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </a>
+    </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Progress Steps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='details.css') }}">
+</head>
+<body>
+    <div class="progress-wrapper">
+        <!-- Desktop Progress -->
+        
+            
+        <div class="progress-steps">
+            <button class="step-btn " data-step="1">
+                <span class="step-number">1</span>
+                <div class="step-info">
+                    <h3>Location</h3>
+                    <p>Choose Location</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="2">
+                <span class="step-number">2</span>
+                <div class="step-info">
+                    <h3>Dining Area </h3>
+                    <p>Select Your Dining Area</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="3">
+                <span class="step-number">3</span>
+                <div class="step-info">
+                    <h3>Date & Time</h3>
+                    <p>Select Date & Time</p>
+                </div>
+            </button>
+        
+            <button class="step-btn active" data-step="4">
+                <span class="step-number">4</span>
+                <div class="step-info">
+                    <h3>Details</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="5">
+                <span class="step-number">5</span>
+                <div class="step-info">
+                    <h3>Complete</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        </div>
+
+
+                    <div class="progress-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Progress -->
+        <div class="mobile-progress">
+            <div class="mobile-header">
+                <div class="current-info">
+                    <span class="step-count">Step <span class="current">1</span> of 5</span>
+                    <h2 class="current-title">Select Type</h2>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="75%"></div>
+                </div>
+                <div class="step-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot" data-step="5"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="step-section active" data-step="1">
+            <div class="step-content-wrapper">
+                <div class="details-container">
+                    <!-- Left Side: Guest Information Form -->
+                    <div class="form-section">
+                        <h2>Guest Information</h2>
+                        <form class="details-step">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name:</label>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address:</label>
+                                    <input type="email" id="emailAdress" name="email" placeholder="Enter your email address" required>
+                                </div>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number:</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="guests">Number of Guests:</label>
+                                    <select id="guests" name="guests">
+                                        <option value="">Select Number Of Guests</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                    </select>
+                                </div>
+                            </div>
+                <!-- Dietary Preferences Section -->
+                            <!-- Dietary Preferences Section -->
+                            <div class="dietary-preferences">
+                                <h3>Dietary Preferences</h3>
+                                <p>Select any dietary requirements or allergies</p>
+                                <div class="preferences-options">
+                                    <div class="diet-option">
+                                        <label><input type="checkbox" name="diet" value="gluten-free"> 🍞 Gluten-Free</label>
+                                    </div>
+                                    <div class="diet-option">
+                                        <label><input type="checkbox" name="diet" value="soy-free"> 🫘 Soy-Free</label>
+                                    </div>
+                                    <div class="diet-option">
+                                        <label><input type="checkbox" name="diet" value="nut-free"> 🥜 Nut-Free</label>
+                                    </div>
+                                    <div class="diet-option">
+                                        <label><input type="checkbox" name="diet" value="raw-options"> 🥗 Raw Options</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <label for="specialRequests">Special Requests:</label>
+                            <textarea id="specialRequests" name="specialRequests" placeholder="Tell us about any special occasions or special requests..."></textarea>
+                        </form>
+                    </div>
+                
+                    <!-- Right Side: Reservation Summary -->
+                    <div class="reservation-summary">
+                        <h3>Your Reservation</h3>
+                        <form action="{{ url_for('reservation_details') }}" method="post">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span class="icon">📍</span> Location</td>
+                                    <td>{{selected_location}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="icon">🪑</span> Area</td>
+                                    <td>{{dining_area}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="icon">📅</span> Date & Time</td>
+                                    <td>{{selected_date}} {{selected_time}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </form> 
+                
+                
+            </div>
+        </section>
+
+        <section class="step-section" data-step="2">
+            <div class="step-content-wrapper">
+                <!-- Step 2 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="3">
+            <div class="step-content-wrapper">
+                <!-- Step 3 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="4">
+            <div class="step-content-wrapper">
+                <!-- Step 4 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="5">
+            <div class="step-content-wrapper">
+                <!-- Step 5 content -->
+            </div>
+        </section>
+
+    </section>
+
+    <script>
+let dietaryPreferences = [];
+
+// Set up event listeners for checkboxes
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            dietaryPreferences.push(this.value);
+        } else {
+            const index = dietaryPreferences.indexOf(this.value);
+            if (index > -1) {
+                dietaryPreferences.splice(index, 1);
+            }
+        }
+        console.log("Updated dietary preferences:", dietaryPreferences);
+        
+        // Send the updated array after each change
+        fetch('/details/reservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                field: 'diet',
+                dietaryPreferences: dietaryPreferences 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Data saved:", data.message);
+            } else {
+                console.error("Error:", data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
+    });
+});
+
+
+document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea, select').forEach(input => {
+    input.addEventListener('input', function() {
+        const inputValue = this.value;
+        const fieldId = this.id || this.name; // Use the ID if available, otherwise use the name
+        
+        let data = {
+            field: fieldId,
+            inputValue: inputValue
+        };
+        
+        // Special handling for the dropdown
+        if (this.id === 'guests') {
+            const selectedOption = this.options[this.selectedIndex];
+            data.selectedValue = selectedOption.value;
+        }
+
+        fetch('/details/reservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Data saved:", data.message);
+            } else {
+                console.error("Error:", data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
+    });
+});
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                const progressValue = progressFill.getAttribute('data-progress');
+                progressFill.style.width = progressValue;
+            }
+        });
+        
+        </script>
+
+        <div class="nav-buttons">
+            <a href="{{ url_for('date_and_time_page') }}">
+            <button class="nav-btn prev" >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+            </button>
+        </a>
+        <a href="{{ url_for('confirmation') }}">
+                <button class="nav-btn next">
+                    <span>Next</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

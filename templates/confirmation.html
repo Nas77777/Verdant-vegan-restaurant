@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmed | Luxe Vegan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='confirmation.css') }}">
+</head>
+<body>
+    
+    <main class="confirmation-page">
+        <div class="confirmation-container">
+            <div class="confirmation-header">
+                <div class="success-icon">✓</div>
+                <h1>Reservation Confirmed</h1>
+                <p class="confirmation-message">Thank you for choosing  Verdant. We look forward to serving you.</p>
+            </div>
+
+    
+            <div class="confirmation-details">
+                <div class="confirmation-section">
+                    <h3>Reservation Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-group">
+                            <span class="detail-icon">📅</span>
+                            <div class="detail-text">
+                                <span class="detail-label">Date & Time</span>
+                                <span class="detail-value">{{Date}} at {{Time}}</span>
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <span class="detail-icon">👥</span>
+                            <div class="detail-text">
+                                <span class="detail-label">Guest's</span>
+                                <span class="detail-value">{{guests}}</span>
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <span class="detail-icon">📍</span>
+                            <div class="detail-text">
+                                <span class="detail-label">Location</span>
+                                <span class="detail-value">{{location}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="confirmation-actions">
+                    <p class="confirmation-note">A confirmation email has been sent to your email address.</p>
+                    <div class="action-buttons">
+                        <a href="index.html" class="home-btn">Return to Home</a>
+                        <button class="calendar-btn">view profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

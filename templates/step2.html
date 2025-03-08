@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Progress Steps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='step2.css') }}">
+</head>
+<body>
+    <div class="progress-wrapper">
+        <!-- Desktop Progress -->
+        
+        <div class="progress-steps">
+            <button class="step-btn " data-step="1">
+                <span class="step-number">1</span>
+                <div class="step-info">
+                    <h3>Location</h3>
+                    <p>Choose Location</p>
+                </div>
+            </button>
+        
+            <button class="step-btn active" data-step="2">
+                <span class="step-number">2</span>
+                <div class="step-info">
+                    <h3>Dining Area </h3>
+                    <p>Select Your Dining Area</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="3">
+                <span class="step-number">3</span>
+                <div class="step-info">
+                    <h3>Date & Time</h3>
+                    <p>Select Date & Time</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="4">
+                <span class="step-number">4</span>
+                <div class="step-info">
+                    <h3>Details</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        
+            <button class="step-btn " data-step="5">
+                <span class="step-number">5</span>
+                <div class="step-info">
+                    <h3>Complete</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        </div>
+
+                    <div class="progress-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Progress -->
+        <div class="mobile-progress">
+            <div class="mobile-header">
+                <div class="current-info">
+                    <span class="step-count">Step <span class="current">1</span> of 5</span>
+                    <h2 class="current-title">Select Type</h2>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="35%"></div>
+                </div>
+                <div class="step-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot" data-step="5"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="step-section active" data-step="1">
+            <div class="step-content-wrapper">
+                <span class="stp-2-h2"><h2>Select Your Dinning Area</h2></span><br>
+
+
+                <!-- Main Dinning -->
+                <div class="stp-2-flex-cont">
+                    <div class="stp-2-item">
+
+                        <div style="background-image: url('/static/location1.jpg');" class="stp-2-image">
+                            <span class="mdp-responsive-stp-2"></span>
+                            <span class="mdp-stp-2"></span>
+                            <h2 style="font-size: 20px;">Main Dining Room</h2>
+                            <h3>2-8 Guests</h3>
+                        </div>
+                    </div>
+
+                    <div class="stp-2-box">
+                        <div style="padding:9px 0 0 25px;">
+                            <div class="stp-2-title">
+                                <span class="text-title"><h2>Main Dining Room</h2></span>
+                                <span class="box-right-text"><h4>Elegant & Vibrant</h4></span>
+                            </div>
+                        </div>
+
+                        <ul class="stp-2-list">
+                            <li><span class="stp-2-icon" style="font-size: 18px;"><span style="padding:7px 9px 7px 9px;">🪑</span></span>Seating</li>
+                            <p>Luxurious booth & table options</p><br>
+
+                            <li><span class="stp-2-icon"><span>🎵</span></span>Atmosphere</li>
+                            <p>Live piano & ambient music</p><br>
+
+                            <li><span class="stp-2-icon"><span>🌳</span></span>Views</li>
+                            <p>Views Lush green landscape</p>
+                        </ul>
+
+                        <span class="stp-2-box-btn">
+                           
+                            <button class="step-2-btn" data-name="Main Dining Room"> Select Main Dining Room </button> 
+                        </span>
+
+                        <span class="inline-price-cont-1">
+                            <span class="style-price-change"><h2>$85</h2></span>
+                            <h3 class="style-person">per person</h3>
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- VIP -->
+                <div class="stp-2-flex-cont">
+                    <div class="stp-2-item">
+
+                        <div style="background-image: url('/static/dining2.jpg');" class="stp-2-image">
+                            <span class="mdp-responsive-stp-2"></span>
+                            <span class="mdp-stp-2"></span>
+                            <h2 style="font-size: 20px;">VIP Section</h2>
+                            <h3>2-6 Guests</h3>
+                        </div>
+                    </div>
+
+                    <div class="stp-2-box">
+                        <div style="padding:9px 0 0 25px;">
+                            <div class="stp-2-title">
+                                <span class="text-title-1"><h2>VIP Section</h2></span>
+                                <span class="box-right-text"><h4>Exclusive</h4></span>
+                            </div>
+                        </div>
+
+                        <ul class="stp-2-list">
+                            <li><span class="stp-2-icon"><span>⭐</span></span>Service</li>
+                            <p>Dedicated personal butler</p><br>
+
+                            <li><span class="stp-2-icon" style="font-size: 18px;"><span style="padding:7px 9px 7px 9px;">🍷</span></span>Wine</li>
+                            <p>Reserve wine collection</p><br>
+
+                            <li><span class="stp-2-icon"><span>🔒</span></span>Privacy</li>
+                            <p>Private dining suite</p>
+                        </ul>
+
+                        <span class="stp-2-box-btn">
+                           
+                            <button class="step-2-btn" data-name="VIP Section" > Select VIP Section </button> 
+                        </span>
+
+                        <span class="inline-price-cont-1">
+                            <span class="style-price-change"><h2>$225</h2></span>
+                            <h3 class="style-person">per person</h3>
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- Garden -->
+                <div class="stp-2-flex-cont">
+                    <div class="stp-2-item">
+
+                        <div style="background-image: url('/static/dining1.jpg');" class="stp-2-image">
+                            <span class="mdp-responsive-stp-2"></span>
+                            <span class="mdp-stp-2"></span>
+                            <h2 style="font-size: 20px;">Garden Terrace</h2>
+                            <h3>2-10 Guests</h3>
+                        </div>
+                    </div>
+
+                    <div class="stp-2-box">
+                        <div style="padding:9px 0 0 25px;">
+                            <div class="stp-2-title">
+                                <span class="text-title-2"><h2>Garden Terrace</h2></span>
+                                <span class="box-right-text"><h4>Natural & Serene</h4></span>
+                            </div>
+                        </div>
+
+                        <ul class="stp-2-list">
+                            <li><span class="stp-2-icon"><span>🌿</span></span>Verdant garden</li>
+                            <p>Lush garden atmosphere</p><br>
+
+                            <li><span class="stp-2-icon"><span>🌳</span></span>Experience</li>
+                            <p>Stylish alfresco dining space</p><br>
+
+                            <li><span class="stp-2-icon" style="font-size: 18px;"><span style="padding:7px 9px 7px 9px;">🌡️</span></span>Comfort</li>
+                            <p>Climate-controlled space</p>
+                        </ul>
+
+                        <span class="stp-2-box-btn">
+                            
+                            <button class="step-2-btn" data-name="Garden Terrace" > Select Garden Terrace  </button> 
+                        </span>
+
+                        <span class="inline-price-cont-1">
+                            <span class="style-price-change"><h2>$125</h2></span>
+                            <h3 class="style-person">per person</h3>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <script> 
+
+document.querySelectorAll('.step-2-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const diningArea = this.getAttribute('data-name');
+        event.preventDefault();
+        
+        fetch('/dining-area/reservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dining_area: diningArea })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Dining area saved:", data.message);
+            } else {
+                console.error("Error:", data.message);
+            }
+        })
+        .catch(error => console.error("Fetch error:", error));
+    });
+});
+
+    document.querySelectorAll('.step-2-btn').forEach(button => {
+        button.addEventListener('click', function (event) {
+            // Get dining area name
+            const diningArea = this.getAttribute('data-name');
+            
+            // Remove active class from ALL buttons across all boxes
+            document.querySelectorAll('.step-2-btn, .step-2-btn-change').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class only to clicked button
+            this.classList.add('active');
+            
+            // Send data to server
+            fetch('/dining-area/reservation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ dining_area: diningArea })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Dining area saved:", data.message);
+                } else {
+                    console.error("Error:", data.message);
+                }
+            })
+            .catch(error => console.error("Fetch error:", error));
+        });
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                const progressValue = progressFill.getAttribute('data-progress');
+                progressFill.style.width = progressValue;
+            }
+        });
+
+
+        </script>
+
+        <section class="step-section" data-step="2">
+            <!-- <div class="step-content-wrapper"> -->
+
+            </div>
+        </section> 
+
+        <section class="step-section" data-step="3">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 3 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="4">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 4 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="5">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 5 content -->
+            </div>
+        </section>
+
+        
+        <div class="nav-buttons">
+        <a href="{{ url_for('location') }}">
+        <button class="nav-btn prev" >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span>Previous</span>
+        </button>
+        </a>
+            <a href="{{ url_for('date_and_time_page') }}">
+                <button class="nav-btn next">
+                    <span>Next</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

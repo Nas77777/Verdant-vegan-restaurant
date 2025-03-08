@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up | Verdant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <section class="signup">
+        <article class="signup-details">
+            <div class="signup-header">
+                <h1>Create an Account</h1>
+                <p>Join the Verdant Vegan community</p>
+            </div>
+            <form method="POST" class="signup-form">
+                <div class="form-control">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-control">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-control">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-control">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-control">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="sign-up-extras">
+                    <div>
+                        <label class="remember-me">
+                            <input type="checkbox">
+                            <span>I agree to the Terms & Privacy Policy</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn primary">Create an account</button>
+                <br>
+                <div class="separator">
+                    <div class="line"></div>
+                    <span>or</span>
+                    <div class="line"></div>
+                </div>
+                <button class="btn secondary">
+                    <img src="search.png" alt="Google">
+                    <p>Sign up with Google</p>
+                </button>
+            </form>
+            <small class="forgot" align="center"> have an account ? <a href="{{ url_for('login') }}"> Sign in</a> </small>
+        </article>
+        <article class="signup-logo">
+            <div class="welcome-message">
+                <h2>Welcome to Verdant</h2>
+                <p>Experience the finest in plant-based dining</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1615361200141-f45040f367be?w=800" alt="Verdant">
+        </article>
+
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </section>
+</body>
+</html>

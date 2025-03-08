@@ -1,0 +1,108 @@
+<!DOCTYPE html >
+<html lang = "en" >
+<head>
+    <meta  harset = " UTF-8 " >
+    <meta  name = " viewport "  content = " width=device-width,  initial-scale=1.0  " >
+    <title> Reservation | Verdant  </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='make-res.css') }}">
+</head>
+
+
+<body >
+
+    <a href="#" class="close-btn">
+        <ion-icon name="close-outline"></ion-icon>
+    </a>
+    
+    <div class = " container " >
+        <h1> Make a Reservation </h1>
+         <div class = " reservation-options " >
+
+            <!--option 1-->
+            <div class = " option " >
+
+                <div class =" icon "> 🍽️ </div>
+                <h2> Standard Dining </h2>
+                <p> Choose from our main dining room, VIP section, or garden terrace  </p>
+                <!--This is the list of the features inside the res options-->
+                <ul>
+
+                    <li> Price menu </li>
+                    <li> Multiple seating areas </li>
+                    <li> Regular service hours </li>
+
+                </ul>
+                <!--ADDS THE SUBMIT BUTTON-->
+                
+                <button data-name="Standard Dining"> Select </button>
+                
+            </div>
+
+            <!--option 2-->
+            <div class="option" >
+                <div class ="icon"> 👨‍🍳 </div>
+                <h2> Chef's table Experience </h2>
+                <p> Choose from our main dining room, VIP section, or garden terrace </p>
+
+                <ul>
+
+                    <li> Private dining room </li>
+                    <li> Cocktails pairing option </li>
+                    <li> Limited availability </li>
+
+                </ul> 
+                <!--Adda the button-->
+                
+                <button data-name="Chef table Experience ">Select</button>
+                
+
+            </div>
+
+            <!--option 3-->
+            <div class = " option " >
+                <div class =" icon "> 🎉 </div>
+                <h2> Private Events </h2>
+                <p> Customized experience for special occasions </p>
+
+                <ul>
+                    <li> Custom menu planning</li>
+                    <li> Dedicated staff</li>
+                    <li> Flexible scheduling</li>
+
+                </ul>
+                <!--Adds the button-->
+        
+                <button data-name=" Private Events">Select</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            const type = this.getAttribute('data-name');
+            window.location.href = '/location/reservation';
+
+            fetch('/type/reservation',{ 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ type })
+
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("reservation type have been selected successfully:", data.message);
+                } else {
+                    console.error("Error:", data.message);
+                }
+            }); 
+        });
+    });
+    </script>
+
+</body>
+</html>

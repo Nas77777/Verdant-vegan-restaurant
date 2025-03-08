@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Reservation Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body class="light-mode">
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Restaurant Logo" class="logo">
+                <h2>Staff Portal</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="{{ url_for('get_dashboard_data') }}">
+                        <ion-icon name="grid-outline"></ion-icon>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('get_reservations') }}">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('get_revenue_data') }}">
+                        <ion-icon name="bar-chart-outline"></ion-icon>
+                        <span>Revenue</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Dashboard Overview</h1>
+            </header>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <ion-icon name="calendar-number-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Today's Reservations</h3>
+                        <p class="stat-number">{{ total_reservations or 0 }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Confirmed</h3>
+                        <p class="stat-number">{{ confirmed_reservations or 0 }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <ion-icon name="close-circle-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Pending</h3>
+                        <p class="stat-number">{{ pending_reservations or 0 }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Today's Revenue</h3>
+                        <p class="stat-number">${{ total_revenue or 0 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Reservations -->
+            <div class="recent-reservations">
+                <h3>Recent Reservations</h3>
+                <div class="table-container">
+                    <table class="reservations-table">
+                        <thead>
+                            <tr>
+                                <th>Guest Name</th>
+                                <th>Date & Time</th>
+                                <th>Party Size</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if latest_reservations %}
+                                {% for res in latest_reservations %}
+                                    <tr>
+                                        <td>{{ res.guest_name }}</td>
+                                        <td>{{ res.date }}</td>
+                                        <td>{{ res.party_size }}</td>
+                                        <td><span class="status-badge {{ res.status|lower }}">{{ res.status }}</span></td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">No Recent Reservations</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load real revenue data
+            const revenueLabels = JSON.parse('{{ revenue_labels | tojson | safe }}');
+            const revenueData = JSON.parse('{{ revenue_data | tojson | safe }}');
+
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: revenueLabels,
+                    datasets: [{
+                        label: 'Revenue',
+                        data: revenueData,
+                        borderColor: '#2ecc71',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

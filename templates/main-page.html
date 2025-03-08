@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdant - Luxury Vegan Dining</title>
+    <!-- External style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainpage.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+        <nav>
+            <nav class="navbar">
+                    <span class="name"> Verdant </span>
+
+                </div>
+                <div class="nav-links">
+                    <a href="{{ url_for('home') }}">HOME</a>
+                    <a href="{{ url_for('menu') }}">MENU</a>
+                    <a href="{{ url_for('about') }}">ABOUT</a>
+                    <a href="{{ url_for('contact') }}">CONTACT</a>
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('profile') }}" class="profile-icon" title="Your Profile">
+                        <i class="fas fa-user"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="profile-icon" title="Sign In">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </a>
+                {% endif %}
+                    <a href="{{ url_for('reservation_type') }}"> 
+                    <button class="nav-btn"> RESERVATION </button> </a>
+                    
+                </div>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+
+        </nav>
+    
+        
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>Verdant</h1>
+            <p>Luxury Vegan Dining in Louisville</p>
+            <br>
+            <div class="hero-buttons11">
+                <div class="hero-cta">
+                    <a href="{{ url_for('menu') }}" class="primary-btn">View Menu</a>
+
+                <button class="secondary-btn" onclick="document.getElementById('locations').scrollIntoView({ behavior: 'smooth' });">Find us</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section id="featured-products" class="featured-products">
+        <h2 class="ftr-title">Signature Dishes</h2>
+        <p class="section-subtitle">Culinary artistry meets plant-based innovation</p>
+        
+        <div class="products-slider">
+            {% if featured_products %}
+                {% for product in featured_products %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ url_for('uploaded_file', filename=product.image_url) }}" alt="{{ product.name }}">
+                            <div class="product-overlay">
+                                <span class="product-price">${{ product.price }}</span>
+                                <a href="{{ url_for('menu') }}"> 
+                                <button class="view-details">View Details</button>
+                            </a>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>{{ product.name}}</h3> 
+                            <p>{{ product.description }}</p>
+                            <div class="product-tags">
+                                <span>{{product.tag1}}</span>
+                                <span>Organic</span>
+                                <span> </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% if not featured_products %}
+                    <p> No products found </p>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="products-nav">
+            <button class="prev-btn" aria-label="Previous slide">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="next-btn" aria-label="Next slide">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+
+    <!--           location                 -->
+    <section id="locations" class="locations-section">
+        <h2 class = "ftr-title" >Our Locations</h2>
+        <p class="section-subtitle">Experience Verdant across the city</p>
+        
+        <div class="locations-container">
+            <div class="location-card" data-location="downtown">
+                <div class="location-image">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" alt="Downtown Location">
+                    <div class="location-status open">Now Open</div>
+                </div>
+                <div class="location-info">
+                    <h3>Downtown</h3>
+                    <p class="location-address">123 Nature Lane, Eco District</p>
+                    <div class="location-details">
+                        <span><i class="fas fa-clock"></i> 11AM - 10PM</span>
+                        <span><i class="fas fa-phone"></i> (555) 123-4567</span>
+                    </div>
+                    <div class="location-features">
+                        <span>Rooftop Garden</span>
+                        <span>Private Pods</span>
+                        <span>Valet Parking</span>
+                    </div>
+                    <div class="location-actions">
+                    <a href="{{ url_for('reservation_type') }}"> 
+                        <button class="location-btn reserve">Reserve a Table</button>
+                    </a>
+                        <button class="location-btn directions">Get Directions</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="location-card" data-location="waterfront">
+                <div class="location-image">
+                    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9" alt="Waterfront Location">
+                    <div class="location-status coming-soon">Coming Soon</div>
+                </div>
+                <div class="location-info">
+                    <h3>Waterfront</h3>
+                    <p class="location-address">456 Harbor View, Marina District</p>
+                    <div class="location-details">
+                        <span><i class="fas fa-clock"></i> Opening Fall 2024</span>
+                    </div>
+                    <div class="location-features">
+                        <span>Ocean View</span>
+                        <span>Raw Bar</span>
+                        <span>Beach Access</span>
+                    </div>
+                    <div class="location-actions">
+                   
+                        <button class="location-btn notify">Get Notified</button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="location-card" data-location="hills">
+                <div class="location-image">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" alt="Hills Location">
+                    <div class="location-status open">Now Open</div>
+                </div>
+                <div class="location-info">
+                    <h3>Hills District</h3>
+                    <p class="location-address">789 Mountain View, Hills Estate</p>
+                    <div class="location-details">
+                        <span><i class="fas fa-clock"></i> 11AM - 11PM</span>
+                        <span><i class="fas fa-phone"></i> (555) 987-6543</span>
+                    </div>
+                    <div class="location-features">
+                        <span>Panoramic View</span>
+                        <span>Wine Cellar</span>
+                        <span>Terrace</span>
+                    </div>
+                    <div class="location-actions">
+                        <a href="{{ url_for('reservation_type') }}"> 
+                        <button class="location-btn reserve">Reserve a Table</button>
+                        </a>
+                        <button class="location-btn directions">Get Directions</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Our vision -->
+    <main>
+        <section class="our-vision">
+            <h2 class = "ftr-title" >Our Vision</h2>
+            <p class="section-subtitle" style="font-size: 1rem;">
+                At Verdant we focus on representing a luxurious and excellent culinary experience for our customers. Experience the modern vegan in an environment centered on the elegance of nature.
+            </p><br>
+        </section>
+
+        <section id="chefs-table" class="chefs-table-section">
+            <h2 class = "ftr-title" >Chef's Table Experience</h2>
+            <p class="section-subtitle">An intimate culinary journey</p>
+            
+            <div class="chefs-table-content">
+                <div class="chefs-table-info">
+                    <h3>Private Dining Excellence</h3>
+                    <p>Experience an exclusive 8-course tasting menu crafted personally by our executive chef.</p>
+                    <ul class="chefs-table-features">
+                        <li><i class="fas fa-users"></i> 6-8 Guests</li>
+                        <li><i class="fas fa-glass-cheers"></i> 15 different cocktails</li>
+                        <li><i class="fas fa-clock"></i> 2.5 Hour Experience</li>
+                    </ul>
+                    <button class="chef-button" >Inquire Now</button>
+                </div>
+                <div class="chefs-table-gallery">
+                    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9" alt="Chef's Table">
+                </div>
+            </div>
+        </section>
+
+        <section class="events">
+            <h2 class = "ftr-title" >Events</h2>
+            <p class="section-subtitle" >Join our vegan community at Verdant </p>
+
+            <div class="event-container">
+                <div class="event-card-1">
+                    <div class="green-box-1">
+                        <h5>11</h5>
+                        <h5>MAR</h5>
+                    </div>
+    
+                    <div class="grey-box-1">
+                        <h3>Plant-Based Cooking Masterclass</h3>
+                        <p>Learn the art of vegan cuisine from our expert chefs</p>
+
+                        <div class="events-info-1">
+                            <i class="fa-solid fa-clock"></i>
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+
+                        <h4>2:00 PM - 5:00 PM</h4>
+                        <h4>$75 per person</h4>
+                        <a href="#book"> 
+                        <button class="event-button">Book Now</button></a>
+                    </div>
+                </div>
+
+                <div class="event-card-2">
+                    <div class="green-box-2">
+                        <h5>22</h5>
+                        <h5>MAR</h5>
+                    </div>
+
+                    <div class="grey-box-2">
+                        <h3>Cocktails  & Cheese Pairing</h3>
+                        <p>Discover artisan vegan cheese and wine combinations</p>
+                        
+                        <div class="events-info-2">
+                            <i class="fa-solid fa-clock"></i>
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+
+                        <h4>2:00 PM - 5:00 PM</h4>
+                        <h4>$75 per person</h4>
+                        <a href="#book"> 
+                        <button class="event-button">Book Now</button></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-events">
+                <div class="mobile-event-card-1">
+                    <div class="mobile-green-box-1">
+                        <h5>11</h5>
+                        <h5>MAR</h5>
+                    </div>
+
+                    <div class="mobile-grey-box-1">
+                        <h3>Cocktails  & Cheese Pairing</h3>
+                        <p>Discover artisan vegan cheese and wine combinations</p>
+
+                        <div class="mobile-events-info-1">
+                            <i class="fa-solid fa-clock"></i>
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+
+                        <h4>2:00 PM - 5:00 PM</h4>
+                        <h4>$75 per person</h4>
+                        <a href="#book"> 
+                        <button class="mobile-events-button">Book Now</button></a>
+                    </div>
+                </div>
+
+                <div class="mobile-event-card-2">
+                    <div class="mobile-green-box-2">
+                        <h5>22</h5>
+                        <h5>MAR</h5>
+                    </div>
+
+                    <div class="mobile-grey-box-2">
+                        <h3>Plant-Based Cooking Masterclass</h3>
+                        <p>Learn the art of vegan cuisine from our expert chefs</p>
+
+                        <div class="mobile-events-info-2">
+                            <i class="fa-solid fa-clock"></i>
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+
+                        <h4>2:00 PM - 5:00 PM</h4>
+                        <h4>$75 per person</h4>
+                        <a href="#book"> 
+                        <button class="mobile-events-button">Book Now</button></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+    </main>
+
+
+    <!--           sustainability-journey                 -->
+    <section id="sustainability-journey" class="sustainability-journey">
+        <h2 >Our Green Journey</h2>
+        <p class="section-subtitle">Making a difference, over the world </p>
+        
+        <div class="journey-timeline">
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="timeline-content">
+                    <span class="timeline-date">2020</span>
+                    <h3>Farm Partnership</h3>
+                    <p>Established partnerships with local organic farms</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-solar-panel"></i>
+                </div>
+                <div class="timeline-content">
+                    <span class="timeline-date">2021</span>
+                    <h3>100% Renewable Energy</h3>
+                    <p>We focus on using renewable energy over all locations</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="timeline-content">
+                    <span class="timeline-date">2022</span>
+                    <h3>Zero Waste Initiative</h3>
+                    <p>Implemented recycling and decomposable program
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="contact" class="contact-section">
+        <div class="contact-wave">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path fill="#fcf9f2" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+            </svg>
+        </div>
+        <br> <br> <br> <br> 
+        <h2 class = "ftr-title" >Visit Us</h2>
+        <p class="section-subtitle">Experience the best luxury vegan dining in louisville </p>
+        
+        <div class="contact-grid">
+            <div class="contact-info-card">
+                <div class="contact-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Hours</h3>
+                <p>Monday - Thursday: 11am - 10pm</p>
+                <p>Friday - Saturday: 11am - 11pm</p>
+                <p>Sunday: 10am - 9pm</p>
+            </div>
+            
+            <div class="contact-info-card">
+                <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Location</h3>
+                <p>123 Nature Lane</p>
+                <p>Eco District, City</p>
+                <button class="contact-btn directions-btn">
+                    <i class="fas fa-directions"></i> Get Directions
+                </button>
+            </div>
+            
+            <div class="contact-info-card">
+                <div class="contact-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3>Contact</h3>
+                <p>Phone: (555) 123-4567</p>
+                <p>Email: info@verdant.com</p>
+                <a href="{{ url_for('reservation_type') }}">
+                    <button class="contact-btn reserve-btn">
+                        <i class="fas fa-calendar-alt"></i> Make Reservation
+                    </button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section brand">
+                <h3 class="footer-logo">Verdant</h3>
+                <p class="footer-description">
+                    Sustainable luxury dining that celebrates nature's bounty through innovative plant-based cuisine.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section quick-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('menu') }}">Menu</a></li>
+                    <li><a href="{{ url_for('contact') }}">contact</a></li>
+                    <li><a href="{{ url_for('login') }}">login</a></li>
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('reservation_type') }}">Reservation</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section newsletter">
+                <h4>Stay Connected</h4>
+                <p>Subscribe to our newsletter for updates and special offers</p>
+                <form class="newsletter-form">
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <p>&copy; 2024 Verdant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='homepageScript.js') }}"></script>
+</body>
+</html>

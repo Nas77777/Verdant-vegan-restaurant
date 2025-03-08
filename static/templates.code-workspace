@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "templates",
+			"path": "../templates"
+		},
+		{
+			"name": "static",
+			"path": "."
+		}
+	],
+	"settings": {}
+}

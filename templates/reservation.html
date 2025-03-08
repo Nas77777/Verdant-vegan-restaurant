@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verdant reservation system</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='reservation.css') }}">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+  <a href = "{{ url_for('futured_product') }}" >back</a>
+  <div class="container">
+    <h1>Make your reservation</h1>
+
+    <!-- Tabs Section -->
+    <div class="tabs">
+      <div class="tab__list">
+        <div class="tab" data-tab="tab1"><i class="fa-solid fa-calendar-days"></i> </div>
+        <div class="tab" data-tab="tab2"><i class="fa-solid fa-clock"></i> </div>
+        <div class="tab" data-tab="tab3"><i class="fa-solid fa-user"></i> </div>
+        <div class="tab" data-tab="tab4"><i class="fa-solid fa-check"></i></div>
+      </div>
+
+      <!-- Step 1: Select Date -->
+      <div class="tab-content" id="tab1">
+        <h2>Step 1: Select Date</h2>
+        <div class="form-group">       
+    <form action="/select_date" method="post">
+        <input type="date" name="reservation_date" placeholder="Select a date" />
+      <p><button type="submit" id="submit_date">Submit</button></p>
+    </form>
+        </div>
+      </div>
+
+<!-- Step 2: Select Time -->
+    <div class="tab-content" id="tab2">
+      <h2>Step 2: Select Time</h2>
+      <div id="time-content">
+        <form action="/time_slot" method="POST">
+          <!-- Original button style by [https://getcssscan.com/css-checkboxes-examples] -->
+          <div class="checkbox-wrapper-16">
+            <div class="checkbox-grid">
+              {% if available_slots %}
+                {% for availability in available_slots %}
+                  <label class="checkbox-wrapper">
+                    <input 
+                      name="time_selection" 
+                      type="radio" 
+                      class="checkbox-input" 
+                      value="{{ availability.id }}" 
+                      required
+                    />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon"></span>
+                      <span class="checkbox-label"></span>
+                        {{ availability.formatted_start_time }} - {{ availability.formatted_end_time }}
+                      </span>
+                    </span>
+                  </label>
+                {% endfor %}
+              {% else %}
+                <p>No available time slots. Please select another date.</p>
+              {% endif %}
+            </div>
+          </div>
+          <br><br>
+          <button type="submit" class="btn">Submit Time</button>
+        </form>
+      </div>
+    </div>
+
+<style>
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.checkbox-wrapper {
+  flex: 1 1 45%;
+}
+</style>
+
+      <!-- Step 3: User Details -->
+      <div class="tab-content" id="tab3">
+        <h2>Step 3: Number of Guests and Special Requests</h2>
+      <form id="details-form" action="/save_details" method="POST">
+        <label for="number-of-guests">Number of Guests:</label>
+        <input type="number" id="number-of-guests" name="number_of_guests" min="1" max="6" required>
+        
+        <label for="special-requests">Special Requests:</label>
+        <textarea id="special-requests" name="special_requests" rows="4" style="width: 100%; box-sizing: border-box;"></textarea>\
+
+        <button type="submit" id="save-details" class="btn">Save Details</button>
+      </form>
+      </div>
+
+      <!-- Step 4: Confirmation -->
+      <div class="tab-content" id="tab4">
+        <h2>Step 4: Confirmation</h2>
+        <form method="POST" action="/confirm">  
+          <p>Date: {{ reservation_date }}</p>
+          <p>Time: {{ start_time }} - {{ end_time }}</p>
+          <p>Number of Guests: {{ number_of_guests }}</p>
+          <p>Special Requests: {{ special_requests }}</p>
+          <button type="submit" class="btn">Confirm Reservation</button>  
+        </form>
+      </div>
+
+  <!-- Progress Tracker -->
+  <div class="progress-container">
+    <div class="progress-bar"></div>
+    <div class="step active">1</div>
+    <div class="step">2</div>
+    <div class="step">3</div>
+    <div class="step">4</div>
+  </div>
+
+  <div class="buttons">
+    <button id="prev" class="btn" disabled>Previous</button>
+    <button id="next" class="btn">Next</button>
+  </div>
+
+  <script src="{{ url_for('static', filename='reservation.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const prevButton = document.getElementById('prev');
+  const nextButton = document.getElementById('next');
+  const timeButtons = document.querySelectorAll('.timeslot');
+  const steps = document.querySelectorAll('.step');
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+  let currentStep = 0;
+
+  function updateButtons() {
+    prevButton.disabled = currentStep === 0;
+    nextButton.disabled = currentStep === steps.length - 1;
+  }
+
+  function updateTabContent() {
+    tabs.forEach(tab => tab.classList.remove('active'));
+    tabContents.forEach(content => content.classList.remove('active'));
+    tabs[currentStep].classList.add('active');
+    tabContents[currentStep].classList.add('active');
+  }
+
+  prevButton.addEventListener('click', function() {
+    if (currentStep > 0) {
+      steps[currentStep].classList.remove('active');
+      currentStep--;
+      timeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          timeButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    
+      updateButtons();
+      updateButtons();
+      updateTabContent();
+    }
+  });
+
+  nextButton.addEventListener('click', function() {
+    if (currentStep < steps.length - 1) {
+      steps[currentStep].classList.remove('active');
+      currentStep++;
+      steps[currentStep].classList.add('active');
+      updateButtons();
+      updateTabContent();
+    }
+  });
+
+  updateButtons();
+  updateTabContent();
+});
+
+  </script>
+
+
+</body>
+</html>

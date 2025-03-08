@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations Management - Staff Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .chart-card {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .dark-mode .chart-card {
+            background: #2d2d2d;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chart-period, .chart-filter {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .chart-period, .dark-mode .chart-filter {
+            background: #404040;
+            color: #fff;
+        }
+        
+        .chart-period.active, .chart-filter.active {
+            background: #2ecc71;
+            color: white;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle">
+        <ion-icon name="moon-outline" class="moon"></ion-icon>
+        <ion-icon name="sunny-outline" class="sun"></ion-icon>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='static\favicon-32x32.png') }}" alt="Restaurant Logo" class="logo">
+                <h2>Staff Portal</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="{{ url_for('get_reservations') }}">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="{{ url_for('static', filename='images/staff-avatar.jpg') }}" alt="Staff Avatar" class="avatar">
+                    <div class="user-details">
+                        <h4>{{ current_user.name }}</h4>
+                        <p>{{ current_user.role|title }}</p>
+                    </div>
+                </div>
+                <form action="{{ url_for('logout') }}" method="post" id="logoutForm">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="logout-btn">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                        <span>Logout</span>
+                    </button>
+                </form>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Reservations Management</h1>
+                <div class="date-picker">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    <input type="date" id="dateFilter">
+                </div>
+            </header>
+
+            <!-- Quick Stats for Reservations -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(52, 152, 219, 0.1);">
+                        <ion-icon name="calendar-number-outline" style="color: #3498db;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Reservations</h3>
+                        <p class="stat-number" id="totalReservations">{{ reservations|length }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(46, 204, 113, 0.1);">
+                        <ion-icon name="checkmark-circle-outline" style="color: #2ecc71;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Confirmed</h3>
+                        <p class="stat-number" id="confirmedCount">
+                            {{ reservations|selectattr('status', 'equalto', 'Confirmed')|list|length }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(231, 76, 60, 0.1);">
+                        <ion-icon name="close-circle-outline" style="color: #e74c3c;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Pending</h3>
+                        <p class="stat-number" id="pendingCount">
+                            {{ reservations|selectattr('status', 'equalto', 'Pending')|list|length }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(241, 196, 15, 0.1);">
+                        <ion-icon name="cash-outline" style="color: #f1c40f;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Revenue</h3>
+                        <p class="stat-number" id="totalRevenue">${{ "%.2f"|format(reservations|sum(attribute='total_price')) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Reservations Over Time</h3>
+                        <div class="chart-actions">
+                            <button class="chart-period active" data-period="day">Day</button>
+                            <button class="chart-period" data-period="week">Week</button>
+                            <button class="chart-period" data-period="month">Month</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="reservationsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Reservation Status</h3>
+                        <div class="chart-actions">
+                            <button class="chart-filter active" data-filter="all">All</button>
+                            <button class="chart-filter" data-filter="confirmed">Confirmed</button>
+                            <button class="chart-filter" data-filter="pending">Pending</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Reservations Table -->
+            <div class="recent-reservations">
+                <div class="section-header">
+                    <h3>All Reservations</h3>
+                    <div class="search-filter">
+                        <ion-icon name="search-outline"></ion-icon>
+                        <input type="text" id="searchReservations" placeholder="Search reservations...">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="reservations-table">
+                        <thead>
+                            <tr>
+                                <th>Guest Name</th>
+                                <th>Date & Time</th>
+                                <th>Party Size</th>
+                                <th>Status</th>
+                                <th>Total Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reservation in reservations %}
+                            <tr>
+                                <td>
+                                    <div class="guest-info">
+                                        <img src="{{ url_for('static', filename='images/guest-avatar.jpg') }}" alt="Guest" class="guest-avatar">
+                                        <div>
+                                            <p class="guest-name">{{ reservation.guest_name }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ reservation.date }}</td>
+                                <td>{{ reservation.party_size }} People</td>
+                                <td><span class="status-badge {{ reservation.status|lower }}">{{ reservation.status }}</span></td>
+                                <td>${{ "%.2f"|format(reservation.total_price) }}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="#view-details" class="action-btn" title="View Details" data-id="{{ reservation.id }}">
+                                            <ion-icon name="eye-outline"></ion-icon>
+                                        </a>
+                                        <button class="action-btn edit-btn" title="Edit" data-id="{{ reservation.id }}">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </button>
+                                        <button class="action-btn cancel-btn" title="Cancel" data-id="{{ reservation.id }}">
+                                            <ion-icon name="close-outline"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            
+                            {% if reservations|length == 0 %}
+                            <tr>
+                                <td colspan="6" class="empty-table">
+                                    <div class="empty-message">
+                                        <ion-icon name="calendar-outline"></ion-icon>
+                                        <p>No reservations found</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                updateChartsTheme();
+            });
+
+            // Chart Theme Colors
+            const chartColors = {
+                light: {
+                    text: '#333333',
+                    grid: '#e0e0e0',
+                    background: '#ffffff'
+                },
+                dark: {
+                    text: '#ffffff',
+                    grid: '#404040',
+                    background: '#2d2d2d'
+                }
+            };
+
+            // Parse reservation data
+            const reservationsData = JSON.parse('{{ reservations | tojson | safe }}');
+
+            if (!reservationsData || reservationsData.length === 0) {
+                console.log("No reservation data available.");
+                return; // Stop execution if no data
+            }
+
+            // Extract just the date part for charting (YYYY-MM-DD)
+            const processDate = (dateStr) => {
+                return dateStr.split(' ')[0]; // Split at space and take first part
+            };
+
+            // Get unique dates for the x-axis
+            const uniqueDates = [...new Set(reservationsData.map(res => processDate(res.date)))].sort();
+            
+            // Count reservations per day
+            const reservationsPerDay = uniqueDates.map(date => {
+                return reservationsData.filter(res => processDate(res.date) === date).length;
+            });
+
+            // Status counts
+            const statusCounts = { 
+                pending: 0, 
+                confirmed: 0, 
+                completed: 0, 
+                cancelled: 0 
+            };
+            
+            reservationsData.forEach(res => {
+                const status = res.status ? res.status.toLowerCase() : "unknown";
+                statusCounts[status] = (statusCounts[status] || 0) + 1;
+            });
+
+            let reservationsChart, statusChart;
+
+            // Function to initialize charts
+            function initCharts() {
+                const isDark = body.classList.contains('dark-mode');
+                const theme = isDark ? chartColors.dark : chartColors.light;
+                
+                // Clear any existing charts to prevent duplicates
+                if (reservationsChart) {
+                    reservationsChart.destroy();
+                }
+                
+                if (statusChart) {
+                    statusChart.destroy();
+                }
+                
+                // Line Chart: Reservations Over Time
+                const reservationsCtx = document.getElementById('reservationsChart').getContext('2d');
+                reservationsChart = new Chart(reservationsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: uniqueDates,
+                        datasets: [{
+                            label: 'Reservations Per Day',
+                            data: reservationsPerDay,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            // ...other properties...
+                        }]
+                    },
+                    options: { 
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        devicePixelRatio: window.devicePixelRatio || 2,
+                        plugins: {
+                            legend: { 
+                                display: false 
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 13 },
+                                padding: 12,
+                                cornerRadius: 8
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: theme.grid,
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: theme.text,
+                                    padding: 10,
+                                    font: { size: 12 },
+                                    stepSize: 1
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false,
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: theme.text,
+                                    padding: 10,
+                                    font: { size: 12 }
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 1000,
+                            easing: 'easeOutQuart'
+                        }
+                    }
+                });
+
+                // Doughnut Chart: Status Breakdown
+                const statusCtx = document.getElementById('statusChart').getContext('2d');
+                const statusLabels = Object.keys(statusCounts).map(s => s.charAt(0).toUpperCase() + s.slice(1));
+                const statusValues = Object.values(statusCounts);
+
+                statusChart = new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: statusLabels,
+                        datasets: [{
+                            data: statusValues,
+                            backgroundColor: ['#f1c40f', '#2ecc71', '#3498db', '#e74c3c']
+                        }]
+                    },
+                    options: { 
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        devicePixelRatio: window.devicePixelRatio || 2,
+                        plugins: {
+                            legend: { 
+                                position: 'bottom',
+                                labels: {
+                                    color: theme.text,
+                                    font: { size: 12 },
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 13 },
+                                padding: 12,
+                                cornerRadius: 8,
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.raw;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${context.label}: ${percentage}% (${value})`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%',
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                });
+            }
+
+            // Update Charts Theme
+            function updateChartsTheme() {
+                initCharts();
+            }
+
+            // Initialize charts
+            initCharts();
+
+            // Chart Period Buttons
+            const periodButtons = document.querySelectorAll('.chart-period');
+            periodButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    periodButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    // Filter data based on period
+                    // For a real implementation, you'd fetch or filter data by the selected period
+                });
+            });
+
+            // Chart Filter Buttons
+            const filterButtons = document.querySelectorAll('.chart-filter');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    // Filter by status
+                    // For a real implementation, you'd fetch or filter data by the selected status
+                });
+            });
+
+            // Search Reservations
+            const searchInput = document.getElementById('searchReservations');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('.reservations-table tbody tr');
+                    
+                    rows.forEach(row => {
+                        const guestName = row.querySelector('.guest-name')?.textContent.toLowerCase() || '';
+                        const date = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                        const status = row.querySelector('.status-badge')?.textContent.toLowerCase() || '';
+                        
+                        if (guestName.includes(searchTerm) || date.includes(searchTerm) || status.includes(searchTerm)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Mobile Sidebar Toggle
+            const menuToggle = document.createElement('button');
+            menuToggle.className = 'menu-toggle';
+            menuToggle.innerHTML = '<ion-icon name="menu-outline"></ion-icon>';
+            document.body.appendChild(menuToggle);
+
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            }
+
+            menuToggle.addEventListener('click', toggleSidebar);
+            overlay.addEventListener('click', toggleSidebar);
+
+            // Action Buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const reservationId = this.getAttribute('data-id');
+                    alert(`Edit reservation ${reservationId}`);
+                    // You would implement editing functionality here
+                });
+            });
+            
+            document.querySelectorAll('.cancel-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const reservationId = this.getAttribute('data-id');
+                    if (confirm(`Are you sure you want to cancel reservation #${reservationId}?`)) {
+                        alert(`Reservation ${reservationId} cancelled`);
+                        // You would implement cancellation functionality here
+                    }
+                });
+            });
+
+            // Initialize date picker with current date
+            const dateFilter = document.getElementById('dateFilter');
+            const today = new Date().toISOString().split('T')[0];
+            dateFilter.value = today;
+            dateFilter.addEventListener('change', (e) => {
+                const selectedDate = e.target.value;
+                // You would implement date filtering here
+                console.log(`Filtering by date: ${selectedDate}`);
+            });
+        });
+    </script>
+</body>
+</html>

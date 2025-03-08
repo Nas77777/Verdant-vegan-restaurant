@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Progress Steps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='step.css') }}">
+</head>
+<body>
+    <div class="progress-wrapper">
+        <!-- Desktop Progress -->
+        
+        
+            
+        <div class="progress-steps">
+            <button class="step-btn active" data-step="1">
+                <span class="step-number">1</span>
+                <div class="step-info">
+                    <h3>Location</h3>
+                    <p>Choose Location</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="2">
+                <span class="step-number">2</span>
+                <div class="step-info">
+                    <h3>Dining Area </h3>
+                    <p>Select Your Dining Area</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="3">
+                <span class="step-number">3</span>
+                <div class="step-info">
+                    <h3>Date & Time</h3>
+                    <p>Select Date & Time</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="4">
+                <span class="step-number">4</span>
+                <div class="step-info">
+                    <h3>Details</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        
+            <button class="step-btn " data-step="5">
+                <span class="step-number">5</span>
+                <div class="step-info">
+                    <h3>Complete</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        </div>
+
+
+                    <div class="progress-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Progress -->
+        <div class="mobile-progress">
+            <div class="mobile-header">
+                <div class="current-info">
+                    <span class="step-count">Step <span class="current">1</span> of 5</span>
+                    <h2 class="current-title">Select Type</h2>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="--progress-width: 20%;" data-progress="5%"></div>
+                </div>
+                <div class="step-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot" data-step="5"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="step-section active" data-step="1">
+            <div class="step-content-wrapper">
+                <div class="step-content">
+
+                    <div style="background-color: #f8f9fa; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ddd;">
+                        <p><strong>Debug Info:</strong></p>
+                        <p>Reservation Type: "{{ reservation_type }}"</p>
+                    </div>
+
+                    <span class="step-1-h2"><h2>Select Location</h2></span>
+                    <div class="flex-container">
+                    {% if locations and locations|length > 0 and locations[0].availability_status == 1 %}
+                        {% for location in locations %}
+                        <div class="flex-items flex-image">
+                            <img src="{{ url_for('uploaded_file', filename=location.image_url) }}" alt="{{ location.name }}">
+                            <div class="flex-box">
+                                <h1>{{location.name}}</h1>
+
+                                <ul>
+                                    <li><span class="step-1-icons icon-margin">📍</span>  {{location.address}}</li>
+                                    <li><span class="step-1-icons">🕙</span> {{location.operating_hours}} </li>
+                                    <li><span class="step-1-icons">🌱</span> {{location.tags1}}</li>
+                                </ul>
+                                <span class="box-btn">
+                                    <button class="step-1-btn" data-name="{{location.name}}"> {{location.name}} </button> 
+                                </span>
+
+                            </div>
+                        </div>
+                                 
+                {% endfor %}
+            {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable the next button initially if no location has been selected
+    const nextBtn = document.querySelector('.nav-btn.next');
+    if (nextBtn) {
+        // Check if location is already selected
+        const selectedLocation = "{{ session.get('selected_location', '') }}";
+        if (!selectedLocation) {
+            nextBtn.disabled = true;
+            nextBtn.classList.add('disabled');
+        }
+    }
+
+    document.querySelectorAll('.step-1-btn').forEach(button => { 
+        button.addEventListener('click', function() {
+            const locationName = this.getAttribute('data-name');
+            console.log("Selected location:", locationName);
+            
+            // First, save the location to session
+            fetch('/location/reservation', {
+                method: "POST",
+                body: JSON.stringify({ 
+                    "location_name": locationName 
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('disabled');
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+    
+
+        </script>
+
+        <section class="step-section" data-step="2">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 2 content -->
+            </div>
+        </section> 
+
+        <section class="step-section" data-step="3">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 3 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="4">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 4 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="5">
+            <!-- <div class="step-content-wrapper"> -->
+                <!-- Step 5 content -->
+            </div>
+        </section>
+
+        
+        <div class="nav-buttons">
+            <a href="{{ url_for('reservation_type') }}"> 
+            <button class="nav-btn prev" >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+            </button>
+        </a>
+        {% if "standard" in reservation_type.lower() %}
+            <a href="{{ url_for('reserve_dining_area') }}">
+        {% elif "private" in reservation_type.lower() %}
+            <a href="{{ url_for('event_packages') }}">
+        {% elif "chef" in reservation_type.lower() or "table" in reservation_type.lower() %}
+            <a href="{{ url_for('experience') }}">
+        {% endif %}
+                <button class="nav-btn next">
+                    <span>Next</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

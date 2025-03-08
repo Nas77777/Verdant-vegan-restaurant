@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Progress Steps</title>
+    <link rel="stylesheet" href="progress.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="progress-wrapper">
+        <!-- Desktop Progress -->
+        
+            
+                <div class="progress-steps">
+                    <button class="step-btn active" data-step="1">
+                        <span class="step-number">1</span>
+                        <div class="step-info">
+                            <h3>Location</h3>
+                            <p>Choose Location</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="2">
+                        <span class="step-number">2</span>
+                        <div class="step-info">
+                            <h3>Dining Area </h3>
+                            <p>Select Your Dining Area</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="3">
+                        <span class="step-number">3</span>
+                        <div class="step-info">
+                            <h3>Date & Time</h3>
+                            <p>Select Date & Time</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="4">
+                        <span class="step-number">4</span>
+                        <div class="step-info">
+                            <h3>Details</h3>
+                            <p>Confirmation</p>
+                        </div>
+                    </button>
+
+                    <button class="step-btn" data-step="5">
+                        <span class="step-number">5</span>
+                        <div class="step-info">
+                            <h3>Complete</h3>
+                            <p>Confirmation</p>
+                        </div>
+                    </button>
+
+
+                    <div class="progress-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Progress -->
+        <div class="mobile-progress">
+            <div class="mobile-header">
+                <div class="current-info">
+                    <span class="step-count">Step <span class="current">1</span> of 5</span>
+                    <h2 class="current-title">Select Type</h2>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="20%"></div>
+                </div>
+                <div class="step-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot" data-step="5"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="step-section active" data-step="1">
+    <div class="step-content-wrapper">
+        <div class="step-content">
+            <h2>Select Date & Time</h2>
+            <div class="container">
+
+                        <div class="item"> 
+
+
+                            <div class="calender"> 
+                                <div class="header">
+                                    <button id="prevBtn">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+                                    <div class="monthYear" id="monthYear"></div>
+                                    <button id="nextBtn">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="days">
+                                    <div class="day">Sun</div>
+                                    <div class="day">Mon</div>
+                                    <div class="day">Tue</div>
+                                    <div class="day">Wed</div>
+                                    <div class="day">Thu</div>
+                                    <div class="day">Fri</div>
+                                    <div class="day">Sat</div>
+                            </div>
+                                <div class="dates" id="dates"></div>
+                        </div>
+                    </div>
+
+                    <div class="item1"> <h3>Available times</h3>
+                        <div class="timesContainer"> 
+
+                    </div>
+                </div>
+
+        </div>
+    </div>
+        </section>
+
+        <section class="step-section" data-step="2">
+            <div class="step-content-wrapper">
+                
+            </div>
+        </section>
+
+        <section class="step-section" data-step="3">
+            <div class="step-content-wrapper">
+                <!-- Step 3 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="4">
+            <div class="step-content-wrapper">
+                <!-- Step 4 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="5">
+            <div class="step-content-wrapper">
+                <!-- Step 5 content -->
+            </div>
+        </section>
+
+        
+        <div class="nav-buttons">
+            <button class="nav-btn prev" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+            </button>
+            <button class="nav-btn next">
+                <span>Next</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+</main>
+<script src="progress.js"></script>
+</body>
+</html>

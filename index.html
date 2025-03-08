@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reservation System</title>
+    <script>
+function fetchAvailableTimes() {
+    let selectedDate = document.getElementById("date").value;
+
+    fetch(`/get-available-times?date=${selectedDate}`)
+    .then(response => response.json())
+    .then(data => {
+        let timesContainer = document.getElementById("timesContainer");
+        timesContainer.innerHTML = "";
+
+        if (data.times.length === 0) {
+            timesContainer.innerHTML = "<p>No available times for this date.</p>";
+            return;
+        }
+
+        data.times.forEach(time => {
+            let button = document.createElement("button");
+            button.innerText = time;
+            button.classList.add("time-button");
+            button.onclick = function() { 
+                document.querySelectorAll('.time-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                button.classList.add('selected');
+                selectTime(selectedDate, time); 
+            };
+            timesContainer.appendChild(button);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function selectTime(date, time) {
+    fetch('/select-time', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date: date, time: time })
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    </script>
+
+    <style>
+        .time-button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .time-button {
+        background-color: #4CAF50;  
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+
+    }
+
+    .selected {
+        background-color: #008CBA; /* Blue */
+        color: white;
+        border: yellow 2px solid; /* Yellow border */
+        font-weight: bold;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Reservation System</h1>
+    
+    <label for="date">Select a Date:</label>
+    <input type="date" id="date" onchange="fetchAvailableTimes()">
+    
+    <h2>Available Times:</h2>
+    <div id="timesContainer"></div>  <!-- Buttons will be added here dynamically -->
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Analytics - Staff Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body class="light-mode">
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle">
+        <ion-icon name="moon-outline" class="moon"></ion-icon>
+        <ion-icon name="sunny-outline" class="sun"></ion-icon>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Restaurant Logo" class="logo">
+                <h2>Staff Portal</h2>
+            </div>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="{{ url_for('dashboard') }}">
+                        <ion-icon name="grid-outline"></ion-icon>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('reservations') }}">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('guests') }}">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Guests</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{{ url_for('revenue_dashboard') }}">
+                        <ion-icon name="bar-chart-outline"></ion-icon>
+                        <span>Revenue</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('staff') }}">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <span>Staff</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('settings') }}">
+                        <ion-icon name="settings-outline"></ion-icon>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="{{ url_for('static', filename='images/staff-avatar.jpg') }}" alt="Staff Avatar" class="avatar">
+                    <div class="user-details">
+                        <h4>{{ current_user.name }}</h4>
+                        <p>{{ current_user.role.title() }}</p>
+                    </div>
+                </div>
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Revenue Analytics</h1>
+                <div class="date-range-picker">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    <select id="dateRange">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month" selected>This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+            </header>
+
+            <!-- Revenue Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(46, 204, 113, 0.1);">
+                        <ion-icon name="cash-outline" style="color: #2ecc71;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Revenue</h3>
+                        <p class="stat-number">${{ "{:,.2f}".format(total_revenue) }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(52, 152, 219, 0.1);">
+                        <ion-icon name="restaurant-outline" style="color: #3498db;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Average Order Value</h3>
+                        <p class="stat-number">${{ "{:,.2f}".format(avg_order_value) }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(155, 89, 182, 0.1);">
+                        <ion-icon name="people-outline" style="color: #9b59b6;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Customers</h3>
+                        <p class="stat-number">{{ total_customers }}</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(241, 196, 15, 0.1);">
+                        <ion-icon name="card-outline" style="color: #f1c40f;"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Transactions</h3>
+                        <p class="stat-number">{{ total_transactions }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Revenue Trends</h3>
+                        <div class="chart-actions">
+                            <button class="chart-period active" data-period="day">Day</button>
+                            <button class="chart-period" data-period="week">Week</button>
+                            <button class="chart-period" data-period="month">Month</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Revenue Sources</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="sourcesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Details Table -->
+            <div class="revenue-section">
+                <div class="section-header">
+                    <h2>Revenue Breakdown</h2>
+                    <button class="export-btn">
+                        <ion-icon name="download-outline"></ion-icon>
+                        Export Report
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="revenue-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Revenue</th>
+                                <th>Orders</th>
+                                <th>Avg. Order Value</th>
+                                <th>Top Items</th>
+                                <th>Payment Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>May 20, 2024</td>
+                                <td>$2,450</td>
+                                <td>32</td>
+                                <td>$76.56</td>
+                                <td>
+                                    <div class="top-items">
+                                        <span>Steak</span>
+                                        <span>Wine</span>
+                                        <span>Dessert</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="payment-method">
+                                        <ion-icon name="card-outline"></ion-icon>
+                                        Credit Card
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize chart data from server
+        const initialData = {
+            revenue_labels: JSON.parse('{{ revenue_labels | tojson | safe }}'),
+            revenue_data: JSON.parse('{{ revenue_data | tojson | safe }}'),
+            sources_labels: JSON.parse('{{ sources_labels | tojson | safe }}'),
+            sources_data: JSON.parse('{{ sources_data | tojson | safe }}')
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                updateChartsTheme();
+            });
+
+            // Chart Theme Colors
+            const chartColors = {
+                light: {
+                    text: '#333333',
+                    grid: '#e0e0e0',
+                    background: '#ffffff'
+                },
+                dark: {
+                    text: '#ffffff',
+                    grid: '#404040',
+                    background: '#2d2d2d'
+                }
+            };
+
+            let revenueChart, sourcesChart;
+
+            function initCharts() {
+                const isDark = body.classList.contains('dark-mode');
+                const theme = isDark ? chartColors.dark : chartColors.light;
+
+                // Revenue Chart
+                const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+                if (revenueChart) {
+                    revenueChart.destroy();
+                }
+                
+                revenueChart = new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: initialData.revenue_labels,
+                        datasets: [{
+                            label: 'Revenue',
+                            data: initialData.revenue_data,
+                            borderColor: '#2ecc71',
+                            tension: 0.4,
+                            fill: true,
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: theme.grid
+                                },
+                                ticks: {
+                                    color: theme.text,
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: theme.text
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Sources Chart
+                const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
+                if (sourcesChart) {
+                    sourcesChart.destroy();
+                }
+                
+                sourcesChart = new Chart(sourcesCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: initialData.sources_labels,
+                        datasets: [{
+                            data: initialData.sources_data,
+                            backgroundColor: [
+                                '#2ecc71',
+                                '#3498db',
+                                '#9b59b6',
+                                '#f1c40f'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: theme.text
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.raw;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `$${value.toLocaleString()} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Update Charts Theme
+            function updateChartsTheme() {
+                initCharts();
+            }
+
+            // Initialize Charts
+            initCharts();
+
+            // Date Range Change
+            const dateRange = document.getElementById('dateRange');
+            dateRange.addEventListener('change', async (e) => {
+                try {
+                    const response = await fetch(`/staff/revenue?period=${e.target.value}`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    const data = await response.json();
+                    initialData.revenue_labels = data.revenue_labels;
+                    initialData.revenue_data = data.revenue_data;
+                    initialData.sources_labels = data.sources_labels;
+                    initialData.sources_data = data.sources_data;
+                    initCharts();
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+
+            // Export Button
+            const exportBtn = document.querySelector('.export-btn');
+            exportBtn.addEventListener('click', () => {
+                const data = {
+                    revenue_trends: {
+                        labels: initialData.revenue_labels,
+                        data: initialData.revenue_data
+                    },
+                    revenue_sources: {
+                        labels: initialData.sources_labels,
+                        data: initialData.sources_data
+                    }
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'revenue_report.json';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html> 

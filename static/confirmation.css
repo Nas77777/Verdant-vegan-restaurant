@@ -1,0 +1,159 @@
+/* Confirmation Page Styles */
+
+:root {
+    --color-primary: #2c4a3c;
+    --color-secondary: #94a18d;
+    --color-accent: #c69455;
+    --color-background: #fcf9f2;
+    --color-text: #1a2e28;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.12);
+    --footer-background: #1a2e28;
+}
+
+.confirmation-page {
+    min-height: 100vh;
+    padding: 120px 2rem 4rem;
+    background: var(--color-background);
+}
+
+.confirmation-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.confirmation-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(to right, var(--color-primary), #1a2e28);
+    color: white;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 1.5rem;
+}
+
+.confirmation-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.confirmation-message {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.confirmation-details {
+    padding: 2rem;
+}
+
+.details-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.detail-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(198, 148, 85, 0.05);
+    border-radius: 12px;
+}
+
+.detail-icon {
+    font-size: 1.5rem;
+}
+
+.detail-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    opacity: 0.7;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.confirmation-actions {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.home-btn, .calendar-btn {
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+}
+
+.calendar-btn {
+    background: rgba(198, 148, 85, 0.1);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+}
+
+.home-btn:hover, .calendar-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .confirmation-header {
+        padding: 2rem 1rem;
+    }
+
+    .confirmation-header h1 {
+        font-size: 2rem;
+    }
+
+    .success-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .detail-group {
+        padding: 0.75rem;
+    }
+}
+

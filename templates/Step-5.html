@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Progress Steps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Step-5.css') }}">
+</head>
+<body>
+    <div class="progress-wrapper">
+        <!-- Desktop Progress -->
+        
+            
+        <div class="progress-steps">
+            <button class="step-btn" data-step="1">
+                <span class="step-number">1</span>
+                <div class="step-info">
+                    <h3>Location</h3>
+                    <p>Choose Location</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="2">
+                <span class="step-number">2</span>
+                <div class="step-info">
+                    <h3>Dining Area </h3>
+                    <p>Select Your Dining Area</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="3">
+                <span class="step-number">3</span>
+                <div class="step-info">
+                    <h3>Date & Time</h3>
+                    <p>Select Date & Time</p>
+                </div>
+            </button>
+        
+            <button class="step-btn" data-step="4">
+                <span class="step-number">4</span>
+                <div class="step-info">
+                    <h3>Details</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        
+            <button class="step-btn active" data-step="5">
+                <span class="step-number">5</span>
+                <div class="step-info">
+                    <h3>Complete</h3>
+                    <p>Confirmation</p>
+                </div>
+            </button>
+        </div>
+
+
+                    <div class="progress-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Progress -->
+        <div class="mobile-progress">
+            <div class="mobile-header">
+                <div class="current-info">
+                    <span class="step-count">Step <span class="current">1</span> of 5</span>
+                    <h2 class="current-title">Select Type</h2>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="100%"></div>
+                </div>
+                <div class="step-dots">
+                    <span class="dot " data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot active" data-step="5"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="step-section " data-step="1">
+            <div class="step-content-wrapper">
+                </div>
+            </div>
+        </section>
+
+        <section class="step-section" data-step="2">
+            <div class="step-content-wrapper">
+                <!-- Step 2 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="3">
+            <div class="step-content-wrapper">
+                <!-- Step 3 content -->
+            </div>
+        </section>
+
+        <section class="step-section" data-step="4">
+            <div class="step-content-wrapper">
+                <!-- Step 4 content -->
+            </div>
+        </section>
+        <section class="step-section active" data-step="5">
+    <form action="{{ url_for('confirmation') }}" method="post"> 
+
+            <div class="step-content-wrapper">
+                <!-- Step 5 content -->
+                <div class="Step-5-container">
+                    <div class="step-content">
+                        <h2 class="step-title">Review & Confirm Your Reservation</h2><br> 
+                        <div class="reservation-container">
+                            <div class="reservation-main">
+                                <!-- Selected Experience -->
+                                <div class="reservation-card">
+                                    <div class="card-header">
+                                        <span class="icon-badge">🎯</span>
+                                        <h3 class="card-title">Selected Experience</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="info-row">
+                                            <span class="info-label">Type</span>
+                                            <span class="info-value">{{reservation_type}}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Location</span>
+                                            <span class="info-value">{{selected_location}}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Area</span>
+                                            <span class="info-value">{{dining_area}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- Date & Time -->
+                                <div class="reservation-card">
+                                    <div class="card-header">
+                                        <span class="icon-badge">📅</span>
+                                        <h3 class="card-title">Date & Time</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="info-row">
+                                            <span class="info-label">Date</span>
+                                            <span class="info-value">{{selected_date}}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Time</span>
+                                            <span class="info-value">{{selected_time}}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Duration</span>
+                                            <span class="info-value">2 Hours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- Guest Information -->
+                                <div class="reservation-card">
+                                    <div class="card-header">
+                                        <span class="icon-badge">👥</span>
+                                        <h3 class="card-title">Guest Information</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="info-row">
+                                            <span class="info-label">Name</span>
+                                            <span class="info-value">{{ guest_info.get('fullName', 'Not provided') }}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Email</span>
+                                            <span class="info-value">{{ guest_info.get('emailAdress', 'Not provided') }}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Phone</span>
+                                            <span class="info-value">{{ guest_info.get('phoneNumber', 'Not provided') }}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">Guest's</span>
+                                            <span class="info-value">{{ input_value }} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Preferences & Requests -->
+                                <div class="reservation-card">
+                                    <div class="card-header">
+                                        <span class="icon-badge">🍽️</span>
+                                        <h3 class="card-title">Preferences & Requests</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="preferences-section">
+                                            <h4 class="section-title">Dietary Preferences</h4>
+                                            <div class="tags-container">
+                                                {% for pref in dietary_preferences %}
+                                                    <span class="dietary-tag">{{ pref }}</span>
+                                                {% else %}
+                                                    <span>No dietary preferences specified</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="requests-section">
+                                            <h4 class="section-title">Requests:</h4>
+                                            <p class="request-text">{{ guest_info.get('specialrequests', 'No special requests') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% for missing in missing_info%}
+                                <div class="missing-info">
+                                    <h3 class="missing-title">Missing Information</h3>
+                                    <p class="missing-text">{{ missing }}</p>
+                                </div>
+                            {% endfor %}
+                            <!-- Reservation Summary -->
+                            <div class="summary-container">
+                                <div class="reservation-card summary-card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Reservation Summary</h3>
+                                    </div>
+                                    <div class="card-content">
+                                           <!-- Inside the summary-table section -->
+                                        <table class="summary-table" style="width:100%; border-spacing:0; border-collapse:collapse;">
+                                            {% for key, value in reservation_summary.items() %}
+                                            <tr class="price-row">
+                                                <td class="price-label">{{ key }}</td>
+                                                <td class="price-value" style="text-align:right;">{{ value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                        <div class="confirm-section">
+                                            <button data-name="button clicked" class="confirm-button">Confirm Reservation</button>
+                                            <p class="confirm-disclaimer">By confirming, you agree to our reservation policies</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </section>
+
+        <script>
+    document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('confirm-button')) {
+        event.preventDefault(); // Prevent form submission
+        const btn_status = event.target.getAttribute('data-name');
+
+        fetch('/confirmation/reservation', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ btn_status: "confirmation button clicked" })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.missing_info ? 
+                        `Missing information: ${data.missing_info.join(', ')}` : 
+                        'Error processing your reservation');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                console.log("Reservation confirmed successfully");
+                window.location.href = '/thank-you';
+            } else {
+                console.error("Error:", data.message);
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error.message);
+            alert(error.message);
+        }); 
+    }
+});
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    const progressValue = progressFill.getAttribute('data-progress');
+                    progressFill.style.width = progressValue;
+                }
+            });
+        </script>
+
+        
+        <div class="nav-buttons">
+            <a href="{{ url_for('reservation_details') }}">
+            <button class="nav-btn prev" >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+            </button>
+        </a>
+            <a href="#">
+                <button class="nav-btn next" disabled>
+                    <span>Next</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>
