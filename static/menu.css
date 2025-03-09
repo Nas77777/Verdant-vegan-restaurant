@@ -392,3 +392,19 @@
         margin: 0 auto;
     }
 }
+
+.category-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(198, 148, 85, 0.1); /* Light background with same color */
+    padding: 6px;
+    border-radius: 50%; /* Makes it circular */
+    width: 28px;
+    height: 28px;
+}
+
+.category-tag i {
+    font-size: 1rem;
+    color: #c69455; /* Your specified color */
+}

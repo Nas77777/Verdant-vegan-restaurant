@@ -24,16 +24,13 @@
                 <div class =" icon "> 🍽️ </div>
                 <h2> Standard Dining </h2>
                 <p> Choose from our main dining room, VIP section, or garden terrace  </p>
-                <!--This is the list of the features inside the res options-->
                 <ul>
 
                     <li> Price menu </li>
                     <li> Multiple seating areas </li>
                     <li> Regular service hours </li>
 
-                </ul>
-                <!--ADDS THE SUBMIT BUTTON-->
-                
+                </ul>                
                 <button data-name="Standard Dining"> Select </button>
                 
             </div>
@@ -50,9 +47,7 @@
                     <li> Cocktails pairing option </li>
                     <li> Limited availability </li>
 
-                </ul> 
-                <!--Adda the button-->
-                
+                </ul>                 
                 <button data-name="Chef table Experience ">Select</button>
                 
 
@@ -69,9 +64,7 @@
                     <li> Dedicated staff</li>
                     <li> Flexible scheduling</li>
 
-                </ul>
-                <!--Adds the button-->
-        
+                </ul>        
                 <button data-name=" Private Events">Select</button>
 
             </div>
@@ -82,7 +75,6 @@
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', function (event) {
             const type = this.getAttribute('data-name');
-            window.location.href = '/location/reservation';
 
             fetch('/type/reservation',{ 
                 method: 'POST',
@@ -96,6 +88,9 @@
             .then(data => {
                 if (data.success) {
                     console.log("reservation type have been selected successfully:", data.message);
+
+                    window.location.href = '/location/reservation';
+                    
                 } else {
                     console.error("Error:", data.message);
                 }

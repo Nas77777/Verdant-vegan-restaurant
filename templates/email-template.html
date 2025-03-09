@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        /* Email client-safe styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f5f5f5;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        .email-header {
+            background: linear-gradient(to right, #1a2e28, #2a4a40);
+            color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .header-text {
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+        }
+        .content {
+            padding: 40px 20px;
+        }
+        .reservation-details {
+            background-color: #f9f5f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .detail-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .detail-label {
+            display: table-cell;
+            width: 40%;
+            color: #666666;
+            font-size: 14px;
+        }
+        .detail-value {
+            display: table-cell;
+            color: #1a2e28;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #c69455;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666666;
+        }
+        .social-links {
+            margin: 20px 0;
+        }
+        .social-links a {
+            margin: 0 10px;
+            color: #1a2e28;
+            text-decoration: none;
+        }
+        .divider {
+            border-top: 1px solid #eeeeee;
+            margin: 20px 0;
+        }
+        @media only screen and (max-width: 480px) {
+            .email-container {
+                width: 100% !important;
+            }
+            .button {
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="logo">
+                <img src="logo.png" alt="Verdant" style="max-width: 150px;">
+            </div>
+            <h1 class="header-text">Reservation Confirmed!</h1>
+        </div>
+
+        <div class="content">
+            <p>Dear [Guest Name],</p>
+            
+            <p>Thank you for choosing Verdant. Your reservation has been confirmed. We look forward to providing you with an exceptional dining experience.</p>
+
+            <div class="reservation-details">
+                <div class="detail-row">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">[Reservation Date]</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Time:</span>
+                    <span class="detail-value">[Reservation Time]</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Party Size:</span>
+                    <span class="detail-value">[Number of Guests]</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Location:</span>
+                    <span class="detail-value">[Restaurant Location]</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Table:</span>
+                    <span class="detail-value">[Table/Section]</span>
+                </div>
+            </div>
+
+            <h3 style="color: #1a2e28;">Special Requests</h3>
+            <p>[Special Requests/Notes]</p>
+
+            <div class="divider"></div>
+
+            <h3 style="color: #1a2e28;">Important Information</h3>
+            <ul style="padding-left: 20px; color: #666666;">
+                <li>Please arrive 5-10 minutes before your reservation time</li>
+                <li>Your table will be held for 15 minutes after your reservation time</li>
+                <li>For parties of 6 or more, we require 24-hour notice for cancellations</li>
+                <li>Dress code: Smart Casual</li>
+            </ul>
+
+            <a href="[Manage Reservation URL]" class="button">Manage Reservation</a>
+
+            <div class="divider"></div>
+
+            <p style="font-size: 14px; color: #666666;">Need to make changes? You can modify or cancel your reservation up to 24 hours in advance through our website or by calling us at [Phone Number].</p>
+        </div>
+
+        <div class="footer">
+            <div class="social-links">
+                <a href="#">Facebook</a> |
+                <a href="#">Instagram</a> |
+                <a href="#">Twitter</a>
+            </div>
+            <p>[Restaurant Address]<br>
+            Phone: [Phone Number]<br>
+            Email: [Email Address]</p>
+            <p style="font-size: 11px; color: #999999;">This email was sent to [guest@email.com]. If you believe this was sent in error, please contact us.</p>
+        </div>
+    </div>
+</body>
+</html> 

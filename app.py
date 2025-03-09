@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from wtforms import PasswordField
 from flask_admin.form import ImageUploadField
 from sqlalchemy import func, extract, cast, Date
-
+from flask_mail import Mail, Message
 
 db = SQLAlchemy()
 
@@ -24,8 +24,16 @@ app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'static/up
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SECURE'] = True
+
+app.config['MAIL_SERVER']= 'live.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'api'
+app.config['MAIL_PASSWORD'] = 'f0c86f436409ee03cb7283b8605009c3'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.permanent_session_lifetime = timedelta(days=1)
 
+mail = Mail(app)
 db = SQLAlchemy(app)
 
 # Initialize other Flask extensions after SQLAlchemy
@@ -637,9 +645,30 @@ def confirmation():
                           add_on=add_on, 
                           reservation_summary=reservation_summary)
 
+
+""""@app.route('/send')
+def send_confirmation_email():
+
+    reservation = Reservation.query.filter_by(user_id=current_user.id).order_by(Reservation.id.desc()).first()
+    guest_infos = GuestInfo.query.filter_by(reservation_id=reservation.id).all() if reservation else []
+    user_emails = [guest_info.email for guest_info in guest_infos]
+    user_name = guest_infos[0].fullname if guest_infos else "Guest"
+    phone_number = guest_infos[0].phone if guest_infos else "Not provided"
+    number_of_guests = guest_infos[0].numberofguests if guest_infos else "Not provided"
+    special_requests = guest_infos[0].specialrequests if guest_infos else "Not provided"
+    reservation_type = reservation.reservation_type if reservation else "Not provided"
+    
+    message = Message(
+        subject="Reservation Confirmation",
+        recipients=[user_emails],)
+    if current_user.is_authenticated:
+        message.body = render_template('email_template.html', name=current_user)
+    else:
+        message.body = render_template('email_template.html', name="Guest")
+    mail.send(message)"""
+
 @app.route('/thank-you')
 def thank_you():
-    # Retrieve the most recent reservation for this user or from session
     user_id = session.get('user_id')
     if current_user.is_authenticated:
         user_id = current_user.id

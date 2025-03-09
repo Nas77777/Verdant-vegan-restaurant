@@ -20,20 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     menuBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active class from all buttons
+
             menuBtns.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
+
             btn.classList.add('active');
             
-            // Hide all categories
+
             menuCategories.forEach(cat => cat.classList.remove('active'));
-            // Show selected category
+        
             const category = document.getElementById(btn.dataset.category);
             category.classList.add('active');
         });
     });
     
-    // Intersection Observer for menu items animation
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -48,4 +48,5 @@ document.addEventListener('DOMContentLoaded', function() {
     menuItems.forEach(item => {
         observer.observe(item);
     });
+    
 });

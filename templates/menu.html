@@ -75,7 +75,6 @@
             </div>
         </section>
 
-
         <section class="menu-content">
             {% set categories = {} %}
             
@@ -86,40 +85,46 @@
                 {% endif %}
                 {% set _ = categories[product.category].append(product) %}
             {% endfor %}
-            
-            <!-- Then, display each category and its products -->
+
             {% for category, category_products in categories.items() %}
-                <div class="menu-category" id="{{ category }}">
-                    <h2>{{ category | capitalize }}</h2>
-                    <div class="menu-grid">
-                        {% for product in category_products %}
-                            <div class="menu-item">
-                                <div class="menu-item-image">
-                                    <img src="{{ url_for('uploaded_file', filename=product.image_url) }}" alt="{{ product.name }}">
-                                    <div class="menu-item-badge">{{product.tag1}}</div>
-                                </div>
-                                <div class="menu-item-info">
-                                    <h3>{{ product.name }}</h3>
-                                    <p>{{ product.description }}</p>
-                                    <div class="menu-item-footer">
-                                        <span class="price">${{ product.price }}</span>
-                                        <div class="dietary-info">
-                                            {% if product.gluten_free %}
-                                                <span class="gluten-free" title="Gluten-Free"><i class="fas fa-wheat-awn-circle-exclamation"></i></span>
-                                            {% endif %}
-                                            {% if product.nut_free %}
-                                                <span class="nut-free" title="Contains Nuts"><i class="fas fa-seedling"></i></span>
-                                            {% endif %}
-                                        </div>
+            <div class="menu-category {% if category.lower() == 'appetizers' %}active{% endif %}" id="{{ category }}">
+                <h2>{{ category | capitalize }}</h2>
+                <div class="menu-grid">
+                    {% for product in category_products %}
+                        <div class="menu-item">
+                            <div class="menu-item-image">
+                                <img src="{{ url_for('uploaded_file', filename=product.image_url) }}" alt="{{ product.name }}">
+                                <div class="menu-item-badge">{{product.tag1}}</div>
+                            </div>
+                            <div class="menu-item-info">
+                                <h3>{{ product.name }}</h3>
+                                <p>{{ product.description }}</p>
+                                <div class="menu-item-footer">
+                                    <span class="price">${{ product.price }}</span>
+                                    <div class="category-tag">
+                                        {% set icon_dictionary = {
+                                            "appetizers": '<i class="fas fa-leaf"></i>',
+                                            "soups": '<i class="fas fa-utensils"></i>',
+                                            "salads": '<i class="fas fa-seedling"></i>', 
+                                            "main": '<i class="fas fa-star"></i>',
+                                            "desserts": '<i class="fas fa-ice-cream"></i>',
+                                            "beverages": '<i class="fas fa-glass-martini-alt"></i>'
+                                        } %}
+                                        
+                                        {% if product.category.lower() in icon_dictionary %}
+                                            {{ icon_dictionary[product.category.lower()] | safe }}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
+            </div>
             {% endfor %}
         </section>
     </main>
+
 
     <div class="menu-overlay">
         <div class="menu-modal">
