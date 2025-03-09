@@ -1200,30 +1200,4 @@ def home():
     return render_template('main-page.html', featured_products=featured_products, regular_products=regular_products)
 
 if __name__ == '__main__':
-    import sys
-    app.run()
-    with app.app_context():
-        if len(sys.argv) > 1 and sys.argv[1] == "--reset-db":
-            print("Resetting database...")
-            db.drop_all()
-            db.create_all()
-            
-        try:
-            admin = User.query.filter_by(email='admin@example.com').first()
-            if not admin:
-                hashed_password = bcrypt.hashpw('admin123'.encode('utf-8'), bcrypt.gensalt())
-                admin = User(
-                    name="Admin User",
-                    email="admin@example.com",
-                    phone="1234567890",
-                    password_hash=hashed_password,
-                    role="admin"
-                )
-                db.session.add(admin)
-                db.session.commit()
-                print("Admin user created successfully")
-        except Exception as e:
-            db.session.rollback()
-            print(f"Error creating admin user: {e}")
-    
-    app.run(debug=True)
+  app.run()
