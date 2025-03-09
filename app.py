@@ -1181,7 +1181,7 @@ def home():
 
 if __name__ == '__main__':
     import sys
-    
+    app.run()
     with app.app_context():
         if len(sys.argv) > 1 and sys.argv[1] == "--reset-db":
             print("Resetting database...")
