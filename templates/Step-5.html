@@ -158,6 +158,7 @@
                                     </div>
                                 </div>
                         
+                                
                                 <!-- Guest Information -->
                                 <div class="reservation-card">
                                     <div class="card-header">
@@ -171,16 +172,17 @@
                                         </div>
                                         <div class="info-row">
                                             <span class="info-label">Email</span>
-                                            <span class="info-value">{{ guest_info.get('emailAdress', 'Not provided') }}</span>
+                                            <span class="info-value">{{ guest_info.get('emailAddress', 'Not provided') }}</span>
                                         </div>
                                         <div class="info-row">
                                             <span class="info-label">Phone</span>
                                             <span class="info-value">{{ guest_info.get('phoneNumber', 'Not provided') }}</span>
                                         </div>
                                         <div class="info-row">
-                                            <span class="info-label">Guest's</span>
-                                            <span class="info-value">{{ input_value }} </span>
+                                            <span class="info-label">Guests</span>
+                                            <span class="info-value">{{ guest_info.get('numberofguests', 'Not provided') }}</span>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                                 

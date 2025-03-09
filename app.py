@@ -528,7 +528,7 @@ def confirmation():
                 # Create guest info record
                 guest_info_record = GuestInfo(
                     fullname=guest_info.get('fullName'),
-                    email=guest_info.get('emailAdress'),
+                    email=guest_info.get('emailAddress'),  # Updated from emailAdress to emailAddress
                     phone=guest_info.get('phoneNumber'),
                     numberofguests=int(guest_info.get('numberofguests', 1)),
                     specialrequests=guest_info.get('specialrequests', '')
@@ -631,7 +631,7 @@ def confirmation():
                 print(f"Error creating reservation: {str(e)}")
                 return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
 
-    return render_template('step-5.html', 
+    return render_template('Step-5.html', 
                           selected_location=selected_location, 
                           dining_area=dining_area, 
                           selected_date=selected_date, 
@@ -644,7 +644,6 @@ def confirmation():
                           experience=experience, 
                           add_on=add_on, 
                           reservation_summary=reservation_summary)
-
 
 """"@app.route('/send')
 def send_confirmation_email():
@@ -990,8 +989,8 @@ def reservation_details():
             # Handle regular form fields
             if field == 'fullName':
                 session['guest_info']['fullName'] = input_value
-            elif field == 'emailAdress':
-                session['guest_info']['emailAdress'] = input_value
+            elif field == 'emailAddress':  # Fix the spelling - was 'emailAdress'
+                session['guest_info']['emailAddress'] = input_value
             elif field == 'phone':
                 session['guest_info']['phoneNumber'] = input_value
             elif field == 'guests':
