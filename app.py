@@ -25,7 +25,6 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SECURE'] = True
 app.permanent_session_lifetime = timedelta(days=1)
 
-mail = Mail(app)
 db = SQLAlchemy(app)
 
 # Initialize other Flask extensions after SQLAlchemy
