@@ -11,7 +11,6 @@ from flask_sqlalchemy import SQLAlchemy
 from wtforms import PasswordField
 from flask_admin.form import ImageUploadField
 from sqlalchemy import func, extract, cast, Date
-from flask_mail import Mail, Message
 
 db = SQLAlchemy()
 
@@ -24,13 +23,6 @@ app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'static/up
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SECURE'] = True
-
-app.config['MAIL_SERVER']= 'live.smtp.mailtrap.io'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'api'
-app.config['MAIL_PASSWORD'] = 'f0c86f436409ee03cb7283b8605009c3'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
 app.permanent_session_lifetime = timedelta(days=1)
 
 mail = Mail(app)
