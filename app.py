@@ -623,7 +623,7 @@ def confirmation():
                 print(f"Error creating reservation: {str(e)}")
                 return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
 
-    return render_template('step-5.html', 
+    return render_template('Step-5.html.html', 
                           selected_location=selected_location, 
                           dining_area=dining_area, 
                           selected_date=selected_date, 
@@ -1047,7 +1047,7 @@ def login():
         
         if user is None:
             flash("Invalid email or password.", "danger")
-            return render_template("login.html")
+            return render_template("login.html")  # FIXED: removed "templates\"
 
         try:
             if bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
@@ -1057,11 +1057,11 @@ def login():
                 return redirect(url_for('home'))
             else:
                 flash("Invalid email or password.", "danger")
-                return render_template("login.html")
+                return render_template("login.html")  # FIXED: removed "templates\"
         except Exception as e:
             print(f"Login error: {e}")
             flash("Invalid email or password.", "danger")
-            return render_template("login.html")
+            return render_template("login.html")  # FIXED: removed "templates\"
     return render_template("login.html") 
 
 @app.route('/staff/reservation', methods=['GET', 'POST'])
@@ -1165,6 +1165,26 @@ def get_reservations():
         flash("Failed to retrieve reservations.", "danger")
         return redirect(url_for('home'))
 
+
+@app.route('/debug/template-path')
+def debug_template_path():
+    import os
+    from flask import current_app
+    
+    template_folder = current_app.template_folder
+    static_folder = current_app.static_folder
+    root_path = current_app.root_path
+    
+    templates_exist = os.path.exists(template_folder)
+    templates_list = os.listdir(template_folder) if templates_exist else []
+    
+    return jsonify({
+        'template_folder': template_folder,
+        'templates_exist': templates_exist,
+        'templates_list': templates_list,
+        'static_folder': static_folder,
+        'root_path': root_path
+    })
 
 @app.route('/logout')
 def logout():
