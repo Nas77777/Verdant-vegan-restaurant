@@ -623,7 +623,7 @@ def confirmation():
                 print(f"Error creating reservation: {str(e)}")
                 return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
 
-    return render_template('Step-5.html.html', 
+    return render_template('step-5.html', 
                           selected_location=selected_location, 
                           dining_area=dining_area, 
                           selected_date=selected_date, 
@@ -1047,7 +1047,7 @@ def login():
         
         if user is None:
             flash("Invalid email or password.", "danger")
-            return render_template("login.html")  # FIXED: removed "templates\"
+            return render_template("Login.html")  # FIXED: removed "templates\"
 
         try:
             if bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
@@ -1057,12 +1057,12 @@ def login():
                 return redirect(url_for('home'))
             else:
                 flash("Invalid email or password.", "danger")
-                return render_template("login.html")  # FIXED: removed "templates\"
+                return render_template("Login.html") # FIXED: removed "templates\"
         except Exception as e:
             print(f"Login error: {e}")
             flash("Invalid email or password.", "danger")
-            return render_template("login.html")  # FIXED: removed "templates\"
-    return render_template("login.html") 
+            return render_template("Login.html")  # FIXED: removed "templates\"
+    return render_template("Login.html")
 
 @app.route('/staff/reservation', methods=['GET', 'POST'])
 @login_required
