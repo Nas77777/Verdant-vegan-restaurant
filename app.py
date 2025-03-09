@@ -304,6 +304,7 @@ def uploaded_file(filename):
 
 
 @app.route('/confirmation/reservation', methods=['GET', 'POST'])
+@login_required
 def confirmation():
     # Define these variables at the beginning, so they're available for all request methods
     
@@ -467,11 +468,11 @@ def confirmation():
                 missing_info.append("Time")
                 
             # Check guest info
-            required_fields = ["fullName", "emailAdress", "phoneNumber", "numberofguests"]
+            required_fields = ["fullName", "emailAddress", "phoneNumber", "numberofguests"]  # FIXED SPELLING
             for field in required_fields:
                 if field not in guest_info or not guest_info.get(field):
                     missing_info.append(f"{field}")
-            
+                        
             if missing_info:
                 return jsonify({"success": False, "missing_info": missing_info}), 400
                 
@@ -481,35 +482,44 @@ def confirmation():
                 if not location:
                     return jsonify({"success": False, "message": "Selected location not found"}), 400
 
-                # Get the availability object from the database
                 try:
-    # If selected_time is already an ID, use it directly
                     availability_id = int(selected_time)
                     availability = Availability.query.get(availability_id)
-                except ValueError:
-                    # If selected_time is a time string (like "01:00 AM"), find by start_time instead of time
-                    # Convert string time to datetime.time object first
-                    try:
-                        time_obj = datetime.strptime(selected_time, '%I:%M %p').time()
-                        availability = Availability.query.filter_by(start_time=time_obj).first()
-                        if not availability:
-                            # Try alternate formats if the first one doesn't work
-                            time_obj = datetime.strptime(selected_time, '%H:%M').time()
-                            availability = Availability.query.filter_by(start_time=time_obj).first()
-                        if not availability.is_available:
-                            return jsonify({
-                                "success": False,
-                                "message": "Sorry, this time slot has just been booked by someone else. Please select another time."
-                            }), 409 # Conflict
-                    except ValueError:
-                        # If time parsing fails, this might be a general error
+                    if not availability:
                         availability = None
-
+                except (ValueError, TypeError):
+                    # If not a valid ID, try to find by formatted time
+                    availability = None
+                    
+                    # Try multiple time formats
+                    time_formats = ['%I:%M %p', '%H:%M', '%I:%M']
+                    for fmt in time_formats:
+                        try:
+                            time_obj = datetime.strptime(selected_time, fmt).time()
+                            # Look for availability with matching date AND time
+                            availability = Availability.query.filter_by(
+                                date=datetime.strptime(selected_date, '%Y-%m-%d').date(),
+                                start_time=time_obj,
+                                is_available=True
+                            ).first()
+                            if availability:
+                                break
+                        except ValueError:
+                            continue
+                
+                # If still not found, give up
                 if not availability:
                     return jsonify({
-                        "success": False, 
-                        "message": f"Selected time '{selected_time}' not found. Please select a valid time."
-                    }), 400
+                        "success": False,
+                        "message": f"Time slot not available for {selected_date} at {selected_time}."
+                    }), 404
+                    
+                # Check if the time is still available
+                if not availability.is_available:
+                    return jsonify({
+                        "success": False,
+                        "message": "Sorry, this time slot has just been booked by someone else. Please select another time."
+                    }), 409  # Conflict
 
                 # Handle user authentication - use session user if available, otherwise create a guest user
                 user_id = session.get('user_id')
@@ -528,6 +538,14 @@ def confirmation():
                 db.session.flush() 
 
                 # Create reservation based on type
+
+                user_id = session.get('user_id')
+                if not user_id and current_user.is_authenticated:
+                    user_id = current_user.id
+
+                if not user_id:
+                    user_id = 1 
+
                 if "standard" in reservation_type.lower():
                     dining_area_obj = DiningArea.query.filter(DiningArea.name.ilike(f"%{dining_area}%")).first()
                     dining_area_price = dining_area_obj.price * int(guest_info.get('numberofguests', 1)) if dining_area_obj else 0
@@ -698,6 +716,7 @@ def profile():
     
     user = User.query.get(current_user.id)
     reservations = Reservation.query.filter_by(user_id=current_user.id).all()
+    status = {reservation.id: reservation.status for reservation in reservations}
     
     # Get detailed information for all reservations
     reservation_details = []
@@ -767,8 +786,10 @@ def profile():
         # Handle profile update logic here
         pass
     
-    return render_template('profile.html', user=user, reservations=reservation_details)
+    return render_template('profile.html', user=user, reservations=reservation_details , status=status )
+
 @app.route('/location/reservation', methods=['GET', 'POST'])
+@login_required
 def location(): 
     locations = Location.query.all()
     reservation_type = session.get('reservation_type', '')
@@ -792,6 +813,7 @@ def location():
     return render_template('step.html', locations=locations, reservation_type=reservation_type)
 
 @app.route('/type/reservation', methods=['GET', 'POST'])
+@login_required
 def reservation_type():
     if request.method == 'POST': 
         if not request.is_json:
@@ -911,11 +933,13 @@ def get_available_times():
 
 # Create a separate route to render the template
 @app.route('/date-and-time')
+@login_required
 def date_and_time_page():
     reservation_type = session.get('reservation_type', '')
     return render_template('date&time-3.html', reservation_type=reservation_type)
 
 @app.route('/select-time', methods=['POST'])
+@login_required
 def select_time():
     # Ensure the request is a POST request
     if request.method != 'POST':
@@ -954,6 +978,7 @@ def select_time():
 
 
 @app.route('/details/reservation', methods=['GET', 'POST'])
+@login_required
 def reservation_details():
     if request.method == 'POST':
         if request.is_json:
@@ -1083,7 +1108,7 @@ def login():
             return render_template("Login.html")  # FIXED: removed "templates\"
     return render_template("Login.html")
 
-@app.route('/staff/reservation', methods=['GET', 'POST'])
+"""@app.route('/staff/reservation', methods=['GET', 'POST'])
 @login_required
 def staff_reservation():
     if current_user.role != 'admin':
@@ -1119,7 +1144,7 @@ def staff_reservation():
             reservations = reservations_details  
 
     return render_template('staff_reservations.html', reservations=reservations, selected_date=selected_date)
-
+"""
 
 
 @app.route('/menu', methods=['GET', 'POST'])
