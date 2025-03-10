@@ -131,7 +131,7 @@
                     <div class="stat-info">
                         <h3>Confirmed</h3>
                         <p class="stat-number" id="confirmedCount">
-                            {{ reservations|selectattr('status', 'equalto', 'Confirmed')|list|length }}
+                            {{ confirmed_count }}                  
                         </p>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                     <div class="stat-info">
                         <h3>Pending</h3>
                         <p class="stat-number" id="pendingCount">
-                            {{ reservations|selectattr('status', 'equalto', 'Pending')|list|length }}
+        {{ reservations|selectattr('status', 'lower')|selectattr('status', 'equalto', 'pending')|list|length }}
                         </p>
                     </div>
                 </div>

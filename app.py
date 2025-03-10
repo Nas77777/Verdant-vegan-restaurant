@@ -1173,19 +1173,26 @@ def get_reservations():
         return redirect(url_for('home'))
     
     try:
+        # Get all reservations with newest first
         reservations = Reservation.query.order_by(Reservation.created_at.desc()).all()
         reservation_data = []
         
         for res in reservations:
-            # Safely get values with fallbacks
+            # Get guest name
             guest_name = "Unknown"
             if res.user:
                 guest_name = res.user.name
             
-            date = "Unknown"
-            if res.created_at:
-                date = res.created_at.strftime('%Y-%m-%d %H:%M')
+            # Get the actual selected date and time from availability
+            date_time = "Unknown"
+            if res.availability_id:
+                availability = Availability.query.get(res.availability_id)
+                if availability:
+                    formatted_date = availability.date.strftime('%Y-%m-%d')
+                    formatted_time = availability.formatted_start_time
+                    date_time = f"{formatted_date} {formatted_time}"
             
+            # Get party size
             party_size = "Unknown"
             if res.guest_info and len(res.guest_info) > 0:
                 party_size = str(res.guest_info[0].numberofguests)
@@ -1194,26 +1201,65 @@ def get_reservations():
             reservation_data.append({
                 "id": res.id,
                 "guest_name": guest_name,
-                "date": date,
-                "status": res.status or "Unknown",
+                "date": date_time,
+                "status": res.status or "pending",  # Default to "pending" if None
                 "total_price": float(res.total_price) if res.total_price is not None else 0,
                 "party_size": party_size
             })
         
-        return render_template('reservations.html', reservations=reservation_data)
+        # Debug counts
+        confirmed_count = sum(1 for r in reservation_data if r['status'].lower() == 'confirmed')
+        pending_count = sum(1 for r in reservation_data if r['status'].lower() == 'pending')
+        print(f"Debug: Found {confirmed_count} confirmed and {pending_count} pending reservations")
+    
+        
+        return render_template('reservations.html', reservations=reservation_data, confirmed_count=confirmed_count, pending_count=pending_count)
     
     except Exception as e:
         import traceback
         print(f"Error in reservations endpoint: {str(e)}")
-        print(traceback.format_exc())  # Print the full stack trace for debugging
+        print(traceback.format_exc()) 
+        flash("Failed to retrieve reservations.", "danger")
+        return redirect(url_for('home'))
+    
+
+    except Exception as e:
+        import traceback
+        print(f"Error in reservations endpoint: {str(e)}")
+        print(traceback.format_exc()) 
         flash("Failed to retrieve reservations.", "danger")
         return redirect(url_for('home'))
 
 
+@app.route('/debug/reservation-status')
+@login_required
+def debug_reservation_status():
+    if current_user.role != 'admin':
+        return redirect(url_for('home'))
+    
+    # Get all reservations 
+    reservations = Reservation.query.all()
+    
+    status_data = []
+    for res in reservations:
+        status_data.append({
+            'id': res.id,
+            'status': res.status,
+            'status_lower': res.status.lower() if res.status else None,
+            'is_pending': res.status and res.status.lower() == 'pending',
+            'is_confirmed': res.status and res.status.lower() == 'confirmed'
+        })
+    
+    return jsonify(status_data)
+
 @app.route('/debug/template-path')
+@login_required
 def debug_template_path():
     import os
     from flask import current_app
+    if current_user.role != 'admin':
+        return redirect(url_for('home'))
+
     
     template_folder = current_app.template_folder
     static_folder = current_app.static_folder
@@ -1229,6 +1275,10 @@ def debug_template_path():
         'static_folder': static_folder,
         'root_path': root_path
     })
+
+@app.route('/project-overview')
+def project_overview():
+    return render_template('project-overview.html')
 
 @app.route('/logout')
 def logout():

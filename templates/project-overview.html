@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdant - Project Overview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="overview-header">
+        <div class="container">
+            <h1>Verdant Project</h1>
+            <p>A modern approach to luxury vegan dining experiences</p>
+        </div>
+    </header>
+    
+    <main>
+        <section class="project-intro">
+            <div class="container">
+                <div class="intro-grid">
+                    <div class="intro-content">
+                        <h2>Project Vision</h2>
+                        <p>Verdant brings together culinary artistry, sustainability, and luxury to create the future of plant-based dining. We developed this project for the TSA competition to show how tech can transform dining while promoting eco-friendly practices.</p>
+                        <p>By combining refined design with practical functionality, our restaurant platform delivers memorable experiences for guests while giving staff the tools they need to manage operations smoothly.</p>
+                    </div>
+                    <div class="intro-image">
+                        <img src="{{ url_for('static', filename='dining1.jpg') }}" alt="Verdant Dining Experience">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="key-features">
+            <div class="container">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Multi-step Reservation System</h3>
+                        <p>Our simple five-step reservation process guides customers through choice of dinner experience, location, date and time, personal information entry, and reservation validation.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Sustainability at it's core.</h3>
+                        <p>From menu design to restaurant operation, we have made sustainability a part of every little thing in the dining experience. Verdant is not only a simple website design. </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Multi-location Management</h3>
+                        <p>The system supports multiple restaurant locations with unique dining areas, operating hours, and availability management for each location.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>User Account System</h3>
+                        <p>Personalized user accounts allow guests to track their reservations, manage their profiles, and view their dining history.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3>Dynamic Menu Management</h3>
+                        <p>An elegant but simple online menu system calls attention to our special dishes</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>Administrative Dashboard</h3>
+                        <p>A full backend system for employees to view and manage reservations and informations overview, along side with restaurant activity quiere to ensure you have the best dinning experience at Verdant.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="differentiators">
+            <div class="container">
+                <h2>What Makes Verdant Different</h2>
+                <div class="diff-grid">
+                    <div class="diff-item">
+                        <div class="diff-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="diff-content">
+                            <h3>Sustainability at Heart</h3>
+                            <p>We've woven sustainability into every aspect of the dining experience - from how we design our menus to the way we run our restaurants. Verdant isn't just luxurious; it's environmentally responsible.</p>
+                        </div>
+                    </div>
+
+                    <div class="diff-item">
+                        <div class="diff-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="diff-content">
+                            <h3>Design that Impresses</h3>
+                            <p>Through sophisticated color schemes, typography, and care to detail in creating animations for a seamless luxury dining experience, every design element reflects the sophisticated character of the brand.</p>
+                        </div>
+                    </div>
+
+                    <div class="diff-item">
+                        <div class="diff-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="diff-content">
+                            <h3>Mobile-First Approach</h3>
+                            <p>Whether customers are reserving from their mobile phone, tablet, or desktop, the whole system is mobile user-centered and guests receive the same experience from every device.</p>
+                        </div>
+                    </div>
+
+                    <div class="diff-item">
+                        <div class="diff-icon">
+                            <i class="fas fa-glass-cheers"></i>
+                        </div>
+                        <div class="diff-content">
+                            <h3>Personalized Experience</h3>
+                            <p>Verdant stands out especially with its adjustable dining choices; we monitor nutritional needs, provide special extras, and deal with unusual requests to make sure every visitor feels attended.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="tech-stack">
+            <div class="container">
+                <h2>Technology Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <h3>Backend</h3>
+                        <ul>
+                            <li><span>Flask</span> - Python web framework</li>
+                            <li><span>SQLAlchemy</span> - ORM for database interactions</li>
+                            <li><span>SQLite</span> - Database for development</li>
+                            <li><span>Flask-Login</span> - User authentication</li>
+                            <li><span>Flask-Admin</span> - Admin interface</li>
+                        </ul>
+                    </div>
+                    <div class="tech-item">
+                        <h3>Frontend</h3>
+                        <ul>
+                            <li><span>HTML5/CSS3</span> - Modern web standards</li>
+                            <li><span>JavaScript</span> - Interactive UI elements</li>
+                            <li><span>Responsive Design</span> - Mobile-first approach</li>
+                            <li><span>Jinja2</span> - Templating engine</li>
+                            <li><span>Font Awesome</span> - Iconography</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="project-goals">
+            <div class="container">
+                <h2>Project Goals & Achievements</h2>
+                <div class="goals-content">
+                    <p>The Verdant platform was developed for the Technology Student Association (TSA) competition to demonstrate excellence in web application development with a focus on sustainability and modern user experiences.</p>
+                    
+                    <div class="achievements">
+                        <div class="achievement">
+                            <div class="achievement-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p>Generated an all-encompassing restaurant management solution including built-in reservations.</p>
+                        </div>
+                        
+                        <div class="achievement">
+                            <div class="achievement-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p>Created a complex, sensitive user interface to present plant-based dishes.</p>
+                        </div>
+                        
+                        <div class="achievement">
+                            <div class="achievement-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p>Implemented secure user authentication and profile management</p>
+                        </div>
+                        
+                        <div class="achievement">
+                            <div class="achievement-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p>Created a flexible reservations system able to accommodate several dining styles</p>
+                        </div>
+                        
+                        <div class="achievement">
+                            <div class="achievement-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p>Created an admin interface meant to let eatery personnel supervise operations in every avenue.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="overview-footer">
+        <div class="container">
+            <p>Verdant - Luxury Vegan Dining Platform © 2025</p>
+            <div class="footer-actions">
+                <a href="{{ url_for('home') }}" class="footer-btn">Visit Restaurant Site</a>
+                <a href="{{ url_for('references') }}" class="footer-link">Project References</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
