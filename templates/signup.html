@@ -6,6 +6,7 @@
     <title>Sign up | Verdant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MDX3MPKKJP"></script>
 </head>
 <body>
     <section class="signup">
@@ -70,5 +71,14 @@
         <p style="color: red;">{{ error }}</p>
         {% endif %}
     </section>
+
+    <!-- Google tag (gtag.js) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MDX3MPKKJP');
+</script>
 </body>
 </html>
