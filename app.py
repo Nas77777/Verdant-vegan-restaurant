@@ -27,7 +27,6 @@ app.permanent_session_lifetime = timedelta(days=1)
 
 db = SQLAlchemy(app)
 
-# Initialize other Flask extensions after SQLAlchemy
 login = LoginManager(app)
 login.login_view = 'login'
 admin = Admin(app, name='Verdant Design', template_mode='bootstrap3')
@@ -56,19 +55,17 @@ class Reservation(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=func.now(), onupdate=func.now())
     
-    # Maintain the foreign key columns in Reservation
+   
     experience_id = db.Column(db.Integer, db.ForeignKey("experiences.id"), nullable=True)
     pairing_id = db.Column(db.Integer, db.ForeignKey("pairings.id"), nullable=True)
     event_package_id = db.Column(db.Integer, db.ForeignKey("event_packages.id"), nullable=True)
     event_add_on_id = db.Column(db.Integer, db.ForeignKey("event_add_ons.id"), nullable=True)
     dining_area_id = db.Column(db.Integer, db.ForeignKey("dining_areas.id"), nullable=True)
     
-    # Basic relationships 
     user = db.relationship("User", back_populates="reservations")
     location = db.relationship("Location", back_populates="reservations")
     availability = db.relationship("Availability", back_populates="reservations")
     
-    # Updated relationships with explicit foreign_keys
     experience = db.relationship("Experience", back_populates="reservations", foreign_keys=[experience_id])
     pairing = db.relationship("Pairing", back_populates="reservations", foreign_keys=[pairing_id])
     event_package = db.relationship("EventPackage", back_populates="reservations", foreign_keys=[event_package_id])
@@ -90,7 +87,6 @@ class Reservation(db.Model):
 class GuestInfo(db.Model):
     __tablename__ = "guest_info"
     id = db.Column(db.Integer, primary_key=True)
-    # Add this line to create the foreign key to reservation
     reservation_id = db.Column(db.Integer, db.ForeignKey("reservations.id"), nullable=True)
     fullname = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
@@ -98,7 +94,6 @@ class GuestInfo(db.Model):
     numberofguests = db.Column(db.Integer, nullable=False)
     specialrequests = db.Column(db.String(100), nullable=True)
 
-    # Keep the relationship definition
     reservation = db.relationship("Reservation", back_populates="guest_info")
 
 class Location(db.Model):
@@ -114,8 +109,6 @@ class Location(db.Model):
     image_url = db.Column(db.String(100), nullable=True)
     availability_status = db.Column(db.Boolean, default=True)
     reservations = db.relationship("Reservation", back_populates="location")
-
-# Standard Dining Availability
 
 class Availability(db.Model):
     __tablename__ = "availabilities"
@@ -161,9 +154,7 @@ class Pairing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    # No reservation_id column here
-    
-    # Change relationship to one-to-many (plural)
+
     reservations = db.relationship("Reservation", back_populates="pairing", foreign_keys="[Reservation.pairing_id]")
 
 class EventPackage(db.Model):
@@ -171,9 +162,7 @@ class EventPackage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    # No reservation_id column here
-    
-    # Change relationship to one-to-many (plural)
+
     reservations = db.relationship("Reservation", back_populates="event_package", foreign_keys="[Reservation.event_package_id]")
 
 
@@ -182,9 +171,7 @@ class EventAddOn(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    # No reservation_id column here
-    
-    # Change relationship to one-to-many (plural)
+
     reservations = db.relationship("Reservation", back_populates="event_add_on", foreign_keys="[Reservation.event_add_on_id]")
 
 
@@ -193,9 +180,7 @@ class DiningArea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    # No reservation_id column here
-    
-    # Change relationship to one-to-many (plural)
+
     reservations = db.relationship("Reservation", back_populates="dining_area", foreign_keys="[Reservation.dining_area_id]")
 
 class Membership(db.Model):
@@ -205,7 +190,7 @@ class Membership(db.Model):
     membership_type = db.Column(db.String(50), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
-    reservation_id = db.Column(db.Integer, db.ForeignKey("reservations.id"), nullable=True)  # Changed to nullable=True
+    reservation_id = db.Column(db.Integer, db.ForeignKey("reservations.id"), nullable=True) 
     user = db.relationship("User", back_populates="memberships")
     reservation = db.relationship("Reservation", back_populates="memberships", foreign_keys=[reservation_id])
     name = db.Column(db.String(100), nullable=False)
@@ -302,11 +287,10 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-
+# super tall func that handles the reservation process I shouldve splitted it to 2 or 3 functions 
 @app.route('/confirmation/reservation', methods=['GET', 'POST'])
 @login_required
 def confirmation():
-    # Define these variables at the beginning, so they're available for all request methods
     
     selected_location = session.get("selected_location", "Not selected")
     dining_area = session.get('dining_area', "Not selected")
@@ -316,7 +300,7 @@ def confirmation():
     # Get the guest info dictionary
     guest_info = session.get('guest_info', {})
     dietary_prefs = session.get('dietaryPreferences', [])
-    input_value = session.get('guest_info', {}).get('numberofguests', '1')  # Default to 1 if not provided
+    input_value = session.get('guest_info', {}).get('numberofguests', '1') 
 
     # Convert input_value to integer with fallback
     try:
@@ -324,7 +308,6 @@ def confirmation():
     except (ValueError, TypeError):
         guests_count = 1
 
-    # reservation type 
     reservation_type = session.get('reservation_type', 'Not provided')
 
     # packages and addon that will show in the reservation summary with their price
@@ -345,7 +328,7 @@ def confirmation():
     reservation_summary = {} 
     total_price = 0
 
-    # Calculate costs based on reservation type - case-insensitive comparison
+    # Calculate costs based on reservation type - with case-insensitive comparison to avoid issues 
     if reservation_type and "private" in reservation_type.lower() and event_package:
         print(f"Calculating Private Events package for: {event_package}")
         package = EventPackage.query.filter_by(name=event_package).first()
@@ -407,7 +390,6 @@ def confirmation():
         all_dining_areas = DiningArea.query.all()
         print(f"All available dining areas: {[area.name for area in all_dining_areas]}")
         
-        # Use case-insensitive search to find the dining area
         dining = DiningArea.query.filter(DiningArea.name.ilike(f"%{dining_area}%")).first()
         if dining:
             print(f"Found dining area: {dining.name} with price: ${dining.price}")
@@ -449,7 +431,6 @@ def confirmation():
         for k, v in reservation_summary.items():
             print(f"Key: {k}, Value: {v}")
 
-    # POST request handling - fixed indentation to be at the same level as the GET handler
     if request.method == 'POST':
         btn_status = None
         if request.content_type == 'application/json':
@@ -457,9 +438,8 @@ def confirmation():
             btn_status = data.get('btn_status')
             
         if btn_status == "confirmation button clicked":
-            # Your validation code...
             missing_info = []
-            # Check for required fields
+            # Checking for required fields
             if not selected_location or selected_location == "Not selected":
                 missing_info.append("Location")
             if not selected_date or selected_date == "Not selected":
@@ -507,7 +487,7 @@ def confirmation():
                         except ValueError:
                             continue
                 
-                # If still not found, give up
+                # If still not found give up
                 if not availability:
                     return jsonify({
                         "success": False,
@@ -521,7 +501,7 @@ def confirmation():
                         "message": "Sorry, this time slot has just been booked by someone else. Please select another time."
                     }), 409  # Conflict
 
-                # Handle user authentication - use session user if available, otherwise create a guest user
+                # Handle user authentication - use session user if available, otherwise create a guest user (just in case the reservation confirmation dosent fail even tho you could only accessif your signed in).
                 user_id = session.get('user_id')
                 if not user_id and current_user.is_authenticated:
                     user_id = current_user.id
@@ -529,7 +509,7 @@ def confirmation():
                 # Create guest info record
                 guest_info_record = GuestInfo(
                     fullname=guest_info.get('fullName'),
-                    email=guest_info.get('emailAddress'),  # Updated from emailAdress to emailAddress
+                    email=guest_info.get('emailAddress'),  
                     phone=guest_info.get('phoneNumber'),
                     numberofguests=int(guest_info.get('numberofguests', 1)),
                     specialrequests=guest_info.get('specialrequests', '')
@@ -537,8 +517,7 @@ def confirmation():
                 db.session.add(guest_info_record)
                 db.session.flush() 
 
-                # Create reservation based on type
-
+                # Create reservation based on type check which reservtion type is picked and create the reservation accordingly
                 user_id = session.get('user_id')
                 if not user_id and current_user.is_authenticated:
                     user_id = current_user.id
@@ -580,7 +559,7 @@ def confirmation():
                     experience_obj = Experience.query.filter_by(name=experience).first()
                     experience_price = experience_obj.price * int(guest_info.get('numberofguests', 1)) if experience_obj else 0
                     
-                    # Handle add-ons - properly handling both single string and list values
+                    # Handle add-ons - properly handling both single string and list values ( I think it only saves one as we only have one add-on column in the databse so we need to add more columns for add-ons but we also have pairing so I could assign one of them to pairings and the other to add-ons)
                     addon_obj = None
                     addon_price = 0
                     
@@ -604,9 +583,9 @@ def confirmation():
                         else:
                             print(f"Add-on not found in database")
                     
-                    # Create the reservation with explicit price values
+                    # Create the reservation with detailed price breakdown
                     new_reservation = Reservation(
-                        user_id=user_id or 1,  # Default to user ID 1 if none available
+                        user_id=user_id or 1, 
                         reservation_type=reservation_type,
                         location_id=location.id,
                         availability_id=availability.id,
@@ -654,6 +633,8 @@ def confirmation():
                           add_on=add_on, 
                           reservation_summary=reservation_summary)
 
+
+# this is for the email confirmation that will be sent to the user after the reservation is made but we will need to use a custom domain for this to work
 """"@app.route('/send')
 def send_confirmation_email():
 
@@ -746,7 +727,7 @@ def profile():
                 package_details['name'] = exp.name if exp else "Chef's Table"
                 package_details['price'] = reservation.experience_price or 0
             
-            # Add add-on details if any
+            # Add add-on details if any exists 
             if reservation.event_add_on_id:
                 addon = EventAddOn.query.get(reservation.event_add_on_id)
                 package_details['addon'] = addon.name if addon else "Add-on"
@@ -783,7 +764,6 @@ def profile():
         reservation_details.append(details)
 
     if request.method == 'POST':
-        # Handle profile update logic here
         pass
     
     return render_template('profile.html', user=user, reservations=reservation_details , status=status )
@@ -879,11 +859,12 @@ def reserve_dining_area():
         if not dining_area:
             return jsonify({"message": "Missing dining area data", "success": False}), 400
 
-        # Save the selected dining area to the session
+        # Save the selected dining area to the session (we will be using this approach in all the reservation steps instead of creating a temporary table even tho the table would've worked better.)
         session['dining_area'] = dining_area
 
         return jsonify({"message": dining_area, "success": True})
     return render_template('step2.html')
+
 
 @app.route('/get-available-times')
 def get_available_times():
@@ -910,11 +891,11 @@ def get_available_times():
         availabilities = Availability.query.filter_by(date=parsed_date, is_available=True).all()
         print(f"Found {len(availabilities)} available slots for {parsed_date}")
 
-        # If no availabilities, explicitly return an empty list
+        # If no availabilities return an empty list
         if not availabilities:
             print("No availabilities found for this date")
             return jsonify({"times": []})
-
+        
         # Convert availabilities to slots
         available_slots = []
         for availability in availabilities:
@@ -931,7 +912,7 @@ def get_available_times():
         print(f"Error parsing date: {e}")
         return jsonify({"times": [], "error": "Invalid date format"})
 
-# Create a separate route to render the template
+# this separeted route is used to render the template. 
 @app.route('/date-and-time')
 @login_required
 def date_and_time_page():
@@ -941,34 +922,32 @@ def date_and_time_page():
 @app.route('/select-time', methods=['POST'])
 @login_required
 def select_time():
-    # Ensure the request is a POST request
-    if request.method != 'POST':
-        return jsonify({"success": False, "message": "Invalid request method"}), 405  # Method Not Allowed
 
-    # Get the JSON data sent from the frontend
+    if request.method != 'POST':
+        return jsonify({"success": False, "message": "Invalid request method"}), 405  # making this method as not allowed as we dont want to allow any users to view it.
+
+    # Send the json data to the frontend.
     data = request.get_json()
 
-    # Check if data is provided
     if not data:
         return jsonify({"success": False, "message": "No data provided"}), 400
 
-    # Extract date and time from the data
-    date = data.get('date')
-    time = data.get('time')  # This will be None if only the date is sent
 
-    # Validate that the date is provided
+    date = data.get('date')
+    time = data.get('time') 
+
+
     print(f"Picked Date: {date}, Picked Time: {time}")
     all_availabilities = Availability.query.all()
     print(f"Total availabilities in database: {len(all_availabilities)}")
     if not date:
         return jsonify({"success": False, "message": "Date is required"}), 400
 
-    # Store the selected date and time in the session
+    # Store the selected date and time in the session to use it afterwords. 
     session['selected_date'] = date
     if time:
         session['selected_time'] = time
 
-    # Return a success response
     return jsonify({
         "success": True,
         "message": "Date and time selected successfully",
@@ -1002,10 +981,10 @@ def reservation_details():
             if 'guest_info' not in session:
                 session['guest_info'] = {}
             
-            # Handle regular form fields
+            # handuling the fields that are being sent from the frontend and saving them to the session.
             if field == 'fullName':
                 session['guest_info']['fullName'] = input_value
-            elif field == 'emailAddress':  # Fix the spelling - was 'emailAdress'
+            elif field == 'emailAddress':
                 session['guest_info']['emailAddress'] = input_value
             elif field == 'phone':
                 session['guest_info']['phoneNumber'] = input_value
@@ -1014,10 +993,11 @@ def reservation_details():
             elif field == 'specialRequests':
                 session['guest_info']['specialrequests'] = input_value
             elif field == 'diet':
-                # If we received dietary preferences, replace the entire array
+                # If we received New dietary preferences, replace the entire array
                 if dietary_preferences:
                     session['dietaryPreferences'] = dietary_preferences
 
+            # ensuring that any new data is saved to the session. 
             session.modified = True
             
             """        # Debug prints
@@ -1091,7 +1071,7 @@ def login():
         
         if user is None:
             flash("Invalid email or password.", "danger")
-            return render_template("Login.html")  # FIXED: removed "templates\"
+            return render_template("Login.html") 
 
         try:
             if bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
@@ -1101,13 +1081,14 @@ def login():
                 return redirect(url_for('home'))
             else:
                 flash("Invalid email or password.", "danger")
-                return render_template("Login.html") # FIXED: removed "templates\"
+                return render_template("Login.html") 
         except Exception as e:
             print(f"Login error: {e}")
             flash("Invalid email or password.", "danger")
-            return render_template("Login.html")  # FIXED: removed "templates\"
+            return render_template("Login.html")  
     return render_template("Login.html")
 
+# this is the old code that was used to show the reservations for the staff.
 """@app.route('/staff/reservation', methods=['GET', 'POST'])
 @login_required
 def staff_reservation():
@@ -1162,7 +1143,7 @@ def about():
     return render_template('about.html')
 
 @app.route('/references', methods=['GET', 'POST'])
-def references():  # Updated spelling
+def references():
     return render_template('reference-page.html')  
 
 @app.route('/reservations')
@@ -1173,12 +1154,11 @@ def get_reservations():
         return redirect(url_for('home'))
     
     try:
-        # Get all reservations with newest first
+        # Get all reservations with newest ones first
         reservations = Reservation.query.order_by(Reservation.created_at.desc()).all()
         reservation_data = []
         
         for res in reservations:
-            # Get guest name
             guest_name = "Unknown"
             if res.user:
                 guest_name = res.user.name
@@ -1202,12 +1182,12 @@ def get_reservations():
                 "id": res.id,
                 "guest_name": guest_name,
                 "date": date_time,
-                "status": res.status or "pending",  # Default to "pending" if None
+                "status": res.status or "pending",  # Default to "pending" if None this havent been implefied for the admin to change yet so it will always be pending and the ones that show confirmed where changed using command or table plus.
                 "total_price": float(res.total_price) if res.total_price is not None else 0,
                 "party_size": party_size
             })
         
-        # Debug counts
+        # Debuging
         confirmed_count = sum(1 for r in reservation_data if r['status'].lower() == 'confirmed')
         pending_count = sum(1 for r in reservation_data if r['status'].lower() == 'pending')
         print(f"Debug: Found {confirmed_count} confirmed and {pending_count} pending reservations")
@@ -1218,7 +1198,7 @@ def get_reservations():
     except Exception as e:
         import traceback
         print(f"Error in reservations endpoint: {str(e)}")
-        print(traceback.format_exc()) 
+        print(traceback.format_exc()) # extract, format, and print stack traces of an exception its basically a report. 
         flash("Failed to retrieve reservations.", "danger")
         return redirect(url_for('home'))
     
@@ -1237,7 +1217,6 @@ def debug_reservation_status():
     if current_user.role != 'admin':
         return redirect(url_for('home'))
     
-    # Get all reservations 
     reservations = Reservation.query.all()
     
     status_data = []
@@ -1275,6 +1254,8 @@ def debug_template_path():
         'static_folder': static_folder,
         'root_path': root_path
     })
+
+
 
 @app.route('/project-overview')
 def project_overview():
